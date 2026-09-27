@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyFakta - Akun</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="account.css">
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="ISI_CLIENT_KEY_MIDTRANS_KAMU"></script>
+</head>
+<body>
+    <main class="page">
+
+        <div class="brand-row">
+            <a href="index.html" class="brand">MyFakta</a>
+            <nav class="nav-links">
+                <a href="index.html">Periksa Berita</a>
+                <a href="account.html" class="active">Akun</a>
+            </nav>
+        </div>
+
+        <!-- ============ AUTH SECTION (login/register) ============ -->
+        <section id="auth-section" class="hidden">
+            <div class="auth-wrapper">
+                <div class="auth-card">
+                    <div class="auth-tabs">
+                        <button id="tab-login" class="auth-tab active">Masuk</button>
+                        <button id="tab-register" class="auth-tab">Daftar</button>
+                    </div>
+
+                    <form id="login-form" class="auth-form">
+                        <label for="login-email">Email</label>
+                        <input id="login-email" type="email" placeholder="nama@email.com" required/>
+
+                        <label for="login-password">Password</label>
+                        <input id="login-password" type="password" placeholder="Password" required/>
+
+                        <button type="submit">Masuk</button>
+                    </form>
+
+                    <form id="register-form" class="auth-form hidden">
+                        <label for="register-email">Email</label>
+                        <input id="register-email" type="email" placeholder="nama@email.com" required/>
+
+                        <label for="register-password">Password</label>
+                        <input id="register-password" type="password" placeholder="Minimal 8 karakter" minlength="8" required/>
+
+                        <button type="submit">Buat Akun</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ PROFILE / DASHBOARD SECTION ============ -->
+        <section id="profile-section" class="hidden">
+            <div class="profile-wrapper">
+
+                <div class="profile-header">
+                    <div>
+                        <span class="badge-label">AKUN SAYA</span>
+                        <h2 id="profile-email">-</h2>
+                    </div>
+                    <button id="logout-btn" class="btn-secondary btn-slim">Keluar</button>
+                </div>
+
+                <!-- Kondisi: belum subscribe -->
+                <div id="subscribe-card" class="result-card hidden">
+                    <div class="plan-status-row">
+                        <span class="status-pill status-inactive">Belum Berlangganan</span>
+                    </div>
+                    <h3 class="plan-title">Akses API Developer</h3>
+                    <p class="plan-desc">Berlangganan untuk mendapatkan API key dan gunakan MyFakta langsung dari aplikasi atau website kamu sendiri.</p>
+                    <div class="price-box">
+                        <span class="price-amount">Rp49.000</span>
+                        <span class="price-period">/ bulan</span>
+                    </div>
+                    <button id="subscribe-btn" class="btn-primary">Berlangganan Sekarang</button>
+                </div>
+
+                <!-- Kondisi: sudah subscribe aktif -->
+                <div id="active-card" class="result-card hidden">
+                    <div class="plan-status-row">
+                        <span class="status-pill status-active">Aktif</span>
+                        <span class="plan-expiry" id="plan-expiry">Berlaku hingga -</span>
+                    </div>
+                    <h3 class="plan-title">API Key Kamu</h3>
+                    <p class="plan-desc">Gunakan key ini pada header <code>X-API-Key</code> saat memanggil endpoint <code>/api/v1/check</code>.</p>
+
+                    <div class="apikey-box">
+                        <code id="api-key-value">-</code>
+                        <button id="copy-key-btn" class="btn-slim">Salin</button>
+                    </div>
+
+                    <div class="code-sample">
+<pre id="code-sample-text">fetch('https://hoax-detector-backend-production.up.railway.app/api/v1/check', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'X-API-Key': 'API_KEY_KAMU'
+  },
+  body: JSON.stringify({ content: 'klaim yang mau dicek' })
+})</pre>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <section id="loading-section" class="hidden">
+        <div class="spinner"></div>
+        <p id="loading-text">Memproses...</p>
+    </section>
+
+    <div id="modal-overlay" class="modal-overlay hidden">
+        <div class="modal-box">
+            <div class="modal-icon">!</div>
+            <h3 id="modal-title">Perhatian</h3>
+            <p id="modal-message">Pesan error</p>
+            <button id="modal-close-btn" class="btn-primary">OK</button>
+        </div>
+    </div>
+
+    <script>
+    const API_BASE_URL = 'https://hoax-detector-backend-production.up.railway.app';
+
+    // ---------- Elemen ----------
+    const authSection      = document.getElementById('auth-section');
+    const profileSection   = document.getElementById('profile-section');
+    const loadingSection   = document.getElementById('loading-section');
+    const loadingText      = document.getElementById('loading-text');
+
+    const tabLogin          = document.getElementById('tab-login');
+    const tabRegister       = document.getElementById('tab-register');
+    const loginForm         = document.getElementById('login-form');
+    const registerForm      = document.getElementById('register-form');
+
+    const profileEmail      = document.getElementById('profile-email');
+    const logoutBtn         = document.getElementById('logout-btn');
+
+    const subscribeCard     = document.getElementById('subscribe-card');
+    const subscribeBtn      = document.getElementById('subscribe-btn');
+
+    const activeCard        = document.getElementById('active-card');
+    const planExpiry        = document.getElementById('plan-expiry');
+    const apiKeyValue        = document.getElementById('api-key-value');
+    const copyKeyBtn        = document.getElementById('copy-key-btn');
+    const codeSampleText    = document.getElementById('code-sample-text');
+
+    const modalOverlay      = document.getElementById('modal-overlay');
+    const modalTitle        = document.getElementById('modal-title');
+    const modalMessage      = document.getElementById('modal-message');
+    const modalCloseBtn     = document.getElementById('modal-close-btn');
+
+    // ---------- Helper ----------
+    function showModal(title, message) {
+        modalTitle.textContent = title;
+        modalMessage.textContent = message;
+        modalOverlay.classList.remove('hidden');
+    }
+    function closeModal() {
+        modalOverlay.classList.add('hidden');
+    }
+    function showLoading(text) {
+        loadingText.textContent = text || 'Memproses...';
+        loadingSection.classList.remove('hidden');
+    }
+    function hideLoading() {
+        loadingSection.classList.add('hidden');
+    }
+    function getToken() {
+        return localStorage.getItem('myfakta_token');
+    }
+    function setToken(token) {
+        localStorage.setItem('myfakta_token', token);
+    }
+    function clearToken() {
+        localStorage.removeItem('myfakta_token');
+    }
+
+    async function apiFetch(path, options = {}) {
+        const token = getToken();
+        const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
+        if (token) headers['Authorization'] = 'Bearer ' + token;
+
+        const response = await fetch(API_BASE_URL + path, { ...options, headers });
+        const body = await response.json().catch(() => ({}));
+
+        if (!response.ok) {
+            throw new Error(body.detail || 'Terjadi kesalahan, coba lagi.');
+        }
+        return body;
+    }
+
+    // ---------- Tab switch (login/register) ----------
+    tabLogin.addEventListener('click', () => {
+        tabLogin.classList.add('active');
+        tabRegister.classList.remove('active');
+        loginForm.classList.remove('hidden');
+        registerForm.classList.add('hidden');
+    });
+    tabRegister.addEventListener('click', () => {
+        tabRegister.classList.add('active');
+        tabLogin.classList.remove('active');
+        registerForm.classList.remove('hidden');
+        loginForm.classList.add('hidden');
+    });
+
+    // ---------- Login ----------
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('login-email').value.trim();
+        const password = document.getElementById('login-password').value;
+
+        showLoading('Sedang masuk...');
+        try {
+            const data = await apiFetch('/api/auth/login', {
+                method: 'POST',
+                body: JSON.stringify({ email, password }),
+            });
+            setToken(data.access_token);
+            await loadProfile();
+        } catch (err) {
+            hideLoading();
+            showModal('Gagal Masuk', err.message);
+        }
+    });
+
+    // ---------- Register ----------
+    registerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('register-email').value.trim();
+        const password = document.getElementById('register-password').value;
+
+        showLoading('Membuat akun...');
+        try {
+            await apiFetch('/api/auth/register', {
+                method: 'POST',
+                body: JSON.stringify({ email, password }),
+            });
+            // Auto login setelah register sukses
+            const data = await apiFetch('/api/auth/login', {
+                method: 'POST',
+                body: JSON.stringify({ email, password }),
+            });
+            setToken(data.access_token);
+            await loadProfile();
+        } catch (err) {
+            hideLoading();
+            showModal('Gagal Mendaftar', err.message);
+        }
+    });
+
+    // ---------- Load profile & tentukan tampilan ----------
+    async function loadProfile() {
+        showLoading('Memuat profil...');
+        try {
+            const profile = await apiFetch('/api/account/me');
+            hideLoading();
+            renderProfile(profile);
+        } catch (err) {
+            hideLoading();
+            clearToken();
+            showAuthView();
+        }
+    }
+
+    function renderProfile(profile) {
+        authSection.classList.add('hidden');
+        profileSection.classList.remove('hidden');
+
+        profileEmail.textContent = profile.email;
+
+        if (profile.subscription_status === 'active' && profile.api_key) {
+            subscribeCard.classList.add('hidden');
+            activeCard.classList.remove('hidden');
+
+            apiKeyValue.textContent = profile.api_key;
+            codeSampleText.textContent = codeSampleText.textContent.replace('API_KEY_KAMU', profile.api_key);
+
+            if (profile.subscription_expires_at) {
+                const expiryDate = new Date(profile.subscription_expires_at);
+                planExpiry.textContent = 'Berlaku hingga ' + expiryDate.toLocaleDateString('id-ID', {
+                    day: 'numeric', month: 'long', year: 'numeric'
+                });
+            }
+        } else {
+            activeCard.classList.add('hidden');
+            subscribeCard.classList.remove('hidden');
+        }
+    }
+
+    function showAuthView() {
+        profileSection.classList.add('hidden');
+        authSection.classList.remove('hidden');
+    }
+
+    // ---------- Logout ----------
+    logoutBtn.addEventListener('click', () => {
+        clearToken();
+        showAuthView();
+    });
+
+    // ---------- Subscribe (Midtrans Snap) ----------
+    subscribeBtn.addEventListener('click', async () => {
+        showLoading('Menyiapkan pembayaran...');
+        try {
+            const checkout = await apiFetch('/api/subscription/checkout', { method: 'POST' });
+            hideLoading();
+
+            window.snap.pay(checkout.snap_token, {
+                onSuccess: async function () {
+                    showLoading('Mengaktifkan langganan...');
+                    // beri jeda singkat supaya webhook Midtrans sempat diproses backend
+                    setTimeout(async () => {
+                        await loadProfile();
+                    }, 2000);
+                },
+                onPending: function () {
+                    showModal('Menunggu Pembayaran', 'Pembayaran kamu sedang diproses. Silakan cek kembali halaman ini setelah pembayaran selesai.');
+                },
+                onError: function () {
+                    showModal('Pembayaran Gagal', 'Terjadi kesalahan saat memproses pembayaran. Silakan coba lagi.');
+                },
+                onClose: function () {
+                    // user menutup popup tanpa menyelesaikan pembayaran, tidak perlu aksi apa pun
+                }
+            });
+        } catch (err) {
+            hideLoading();
+            showModal('Gagal Memulai Pembayaran', err.message);
+        }
+    });
+
+    // ---------- Copy API key ----------
+    copyKeyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(apiKeyValue.textContent).then(() => {
+            copyKeyBtn.textContent = 'Tersalin!';
+            setTimeout(() => { copyKeyBtn.textContent = 'Salin'; }, 1500);
+        });
+    });
+
+    modalCloseBtn.addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', e => {
+        if (e.target === modalOverlay) closeModal();
+    });
+
+    // ---------- Init ----------
+    (function init() {
+        if (getToken()) {
+            loadProfile();
+        } else {
+            showAuthView();
+        }
+    })();
+    </script>
+</body>
+</html>
