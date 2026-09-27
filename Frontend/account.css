@@ -1,0 +1,265 @@
+/* ===== Nav & brand row ===== */
+.brand-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.brand-row .brand {
+    text-decoration: none;
+    color: #3469ec;
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links a {
+    color: #64748b;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 6px 2px;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.nav-links a:hover {
+    color: #3469ec;
+}
+
+.nav-links a.active {
+    color: #3469ec;
+    border-bottom-color: #3469ec;
+}
+
+/* ===== Auth section ===== */
+.auth-wrapper {
+    max-width: 420px;
+    margin: 64px auto;
+}
+
+.auth-card {
+    background: #fff;
+    border: 1px solid #dce5f1;
+    border-radius: 18px;
+    padding: 22px;
+}
+
+.auth-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 18px;
+    background: #f5f8fc;
+    border-radius: 10px;
+    padding: 4px;
+}
+
+.auth-tab {
+    flex: 1;
+    width: auto;
+    margin: 0;
+    background: transparent;
+    color: #64748b;
+    font-weight: 700;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.auth-tab:hover {
+    background: transparent;
+    color: #3469ec;
+}
+
+.auth-tab.active {
+    background: #fff;
+    color: #10233f;
+    box-shadow: 0 2px 8px rgba(16, 35, 63, 0.08);
+}
+
+.auth-form label {
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+}
+
+.auth-form label:first-of-type {
+    margin-top: 0;
+}
+
+/* ===== Profile section ===== */
+.profile-wrapper {
+    max-width: 560px;
+    margin: 48px auto 0;
+}
+
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.profile-header h2 {
+    margin: 4px 0 0;
+    font-size: 22px;
+    letter-spacing: -0.5px;
+}
+
+.btn-slim {
+    width: auto;
+    padding: 10px 16px;
+}
+
+.plan-status-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+}
+
+.status-pill {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+    padding: 6px 12px;
+    border-radius: 999px;
+}
+
+.status-pill.status-active {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.status-pill.status-inactive {
+    background: #eef2f8;
+    color: #64748b;
+}
+
+.plan-expiry {
+    font-size: 13px;
+    color: #8894a7;
+}
+
+.plan-title {
+    margin: 0 0 8px;
+    font-size: 19px;
+    color: #10233f;
+}
+
+.plan-desc {
+    margin: 0 0 20px;
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+.plan-desc code {
+    background: #eef2f8;
+    padding: 2px 6px;
+    border-radius: 5px;
+    font-size: 12.5px;
+}
+
+.price-box {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: 20px;
+}
+
+.price-amount {
+    font-size: 32px;
+    font-weight: 800;
+    color: #10233f;
+    letter-spacing: -1px;
+}
+
+.price-period {
+    font-size: 14px;
+    color: #8894a7;
+}
+
+.apikey-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: #f5f8fc;
+    border: 1px solid #dce5f1;
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+}
+
+.apikey-box code {
+    font-size: 13px;
+    color: #10233f;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.code-sample {
+    background: #10233f;
+    border-radius: 10px;
+    padding: 16px;
+    overflow-x: auto;
+}
+
+.code-sample pre {
+    margin: 0;
+    color: #e2e8f0;
+    font-size: 12.5px;
+    line-height: 1.6;
+    white-space: pre;
+}
+
+/* ===== Sources list (halaman utama) ===== */
+.sources-section {
+    margin-bottom: 22px;
+}
+
+.sources-title {
+    display: block;
+    font-size: 13px;
+    color: #10233f;
+    margin-bottom: 10px;
+}
+
+.sources-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sources-list li a {
+    display: block;
+    background: #f5f8fc;
+    border: 1px solid #e6ecf5;
+    border-radius: 10px;
+    padding: 10px 14px;
+    color: #3469ec;
+    text-decoration: none;
+    font-size: 13px;
+    transition: border-color 0.2s ease;
+}
+
+.sources-list li a:hover {
+    border-color: #3469ec;
+}
+
+@media (max-width: 640px) {
+    .auth-wrapper { margin: 32px auto; }
+    .profile-wrapper { margin-top: 24px; }
+}
