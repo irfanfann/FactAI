@@ -102,6 +102,11 @@
                     </div>
                 </div>
 
+                <div class="sources-section" id="sources-section">
+                    <strong class="sources-title">Sumber terkait</strong>
+                    <ul id="sources-list" class="sources-list"></ul>
+                </div>
+
                 <div class="action-buttons">
                     <button id="reset-btn" class="btn-secondary">Cek Berita Lain</button>
                 </div>
@@ -124,6 +129,9 @@
     </div>
 
     <script>
+    // Ganti sesuai domain Railway backend kamu
+    const API_BASE_URL = 'https://hoax-detector-backend-production.up.railway.app';
+
     const inputUrl          = document.getElementById('url');
     const btnAnalys         = document.getElementById('analys');
     const heroWrapper       = document.getElementById('hero-wrapper');
@@ -144,6 +152,9 @@
     const verdictPanel      = document.getElementById('verdict-panel');
     const nextStepText      = document.getElementById('next-step-text');
 
+    const sourcesSection    = document.getElementById('sources-section');
+    const sourcesList       = document.getElementById('sources-list');
+
     const resetBtn          = document.getElementById('reset-btn');
 
     const modalOverlay      = document.getElementById('modal-overlay');
@@ -161,18 +172,67 @@
         modalOverlay.classList.add('hidden');
     }
 
-    function setAnalysis(id, percent, desc) {
-        document.getElementById('pct-' + id).textContent = percent + '%';
-        document.getElementById('bar-' + id).style.width = percent + '%';
-        document.getElementById('desc-' + id).textContent = desc;
+    // 4 kartu analisis (kredibilitas/bahasa/fakta/konteks) masih PLACEHOLDER,
+    // belum dihitung oleh backend. Diisi angka generik supaya UI tetap terlihat lengkap,
+    // akan diganti data asli setelah Layer 1-2 backend diimplementasikan.
+    function setPlaceholderAnalysis(level) {
+        const presets = {
+            green:  { kredibilitas: 10, bahasa: 15, fakta: 10, konteks: 15 },
+            yellow: { kredibilitas: 40, bahasa: 45, fakta: 55, konteks: 50 },
+            red:    { kredibilitas: 90, bahasa: 85, fakta: 92, konteks: 80 },
+        };
+        const descs = {
+            kredibilitas: 'Belum dihitung otomatis oleh sistem — fitur analisis sumber sedang dikembangkan.',
+            bahasa: 'Belum dihitung otomatis oleh sistem — fitur analisis bahasa sedang dikembangkan.',
+            fakta: 'Belum dihitung otomatis oleh sistem — fitur pencocokan fakta sedang dikembangkan.',
+            konteks: 'Belum dihitung otomatis oleh sistem — fitur evaluasi konteks sedang dikembangkan.',
+        };
+        const values = presets[level] || presets.yellow;
+        for (const key in values) {
+            document.getElementById('pct-' + key).textContent = values[key] + '%';
+            document.getElementById('bar-' + key).style.width = values[key] + '%';
+            document.getElementById('desc-' + key).textContent = descs[key];
+        }
     }
 
-    function showResult(level) {
+    // Petakan verdict asli dari backend (HOAX/MISLEADING/VALID/UNVERIFIED) ke level warna UI
+    function mapVerdictToLevel(verdict) {
+        switch (verdict) {
+            case 'VALID': return 'green';
+            case 'HOAX': return 'red';
+            case 'MISLEADING': return 'yellow';
+            case 'UNVERIFIED':
+            default: return 'yellow';
+        }
+    }
+
+    function renderSources(sources) {
+        sourcesList.innerHTML = '';
+        if (!sources || sources.length === 0) {
+            sourcesSection.classList.add('hidden');
+            return;
+        }
+        sourcesSection.classList.remove('hidden');
+        sources.forEach(src => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = src.url;
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            a.textContent = src.title || src.url;
+            li.appendChild(a);
+            sourcesList.appendChild(li);
+        });
+    }
+
+    function showResult(data) {
         loadingSection.classList.add('hidden');
         heroWrapper.classList.add('hidden');
         resultSection.classList.remove('hidden');
 
         resultUrl.textContent = inputUrl.value.trim();
+
+        const level = mapVerdictToLevel(data.verdict);
 
         verdictBadge.className = 'verdict-badge';
         analysisGrid.className = 'analysis-grid';
@@ -180,60 +240,54 @@
 
         analysisGrid.classList.add('status-' + level);
         verdictPanel.classList.add('status-' + level);
+        verdictBadge.classList.add(level);
 
-        if (level === 'green') {
-            verdictBadge.classList.add('green');
-            verdictBadgeIcon.textContent = '✓';
-            verdictBadgeT.textContent = 'GREEN';
-            verdictBadgeS.textContent = 'Kredibel';
-            resultTitle.textContent = 'Artikel terverifikasi dan kredibel';
-            scoreNumber.textContent = '15';
-            scoreDesc.textContent = 'Sumber jelas, data valid, dan penulisan objektif. Artikel aman untuk dibagikan.';
+        const iconMap  = { green: '✓', red: '✕', yellow: '!' };
+        const labelMap = { green: 'GREEN', red: 'RED', yellow: 'YELLOW' };
+        const subMap   = { green: 'Kredibel', red: 'Terindikasi Hoax', yellow: 'Perlu verifikasi' };
+        const titleMap = {
+            green: 'Artikel terverifikasi dan kredibel',
+            red: 'Artikel terindikasi hoax',
+            yellow: 'Artikel memerlukan verifikasi tambahan',
+        };
+        const nextStepMap = {
+            green: 'Artikel dapat dibagikan. Tetap cantumkan sumber aslinya.',
+            red: 'Jangan bagikan. Laporkan ke Kominfo atau platform terkait.',
+            yellow: 'Temukan sumber primer, cek tanggal publikasi, dan cari liputan dari media terpercaya lainnya.',
+        };
 
-            setAnalysis('kredibilitas', 10, 'Domain terdaftar sebagai media resmi yang dikurasi.');
-            setAnalysis('bahasa',      15, 'Bahasa netral dan tidak memancing emosi pembaca.');
-            setAnalysis('fakta',       10, 'Klaim artikel cocok dengan basis fakta pembanding.');
-            setAnalysis('konteks',     15, 'Konteks artikel lengkap dan konsisten.');
+        verdictBadgeIcon.textContent = iconMap[level];
+        verdictBadgeT.textContent = labelMap[level];
+        verdictBadgeS.textContent = subMap[level];
+        resultTitle.textContent = titleMap[level];
 
-            nextStepText.textContent = 'Artikel dapat dibagikan. Tetap cantumkan sumber aslinya.';
+        // Skor risiko dan penjelasan dari data ASLI backend
+        scoreNumber.textContent = data.confidence ?? 0;
+        scoreDesc.textContent = data.explanation || '-';
+        nextStepText.textContent = nextStepMap[level];
 
-        } else if (level === 'red') {
-            verdictBadge.classList.add('red');
-            verdictBadgeIcon.textContent = '✕';
-            verdictBadgeT.textContent = 'RED';
-            verdictBadgeS.textContent = 'Terindikasi Hoax';
-            resultTitle.textContent = 'Artikel terindikasi hoax';
-            scoreNumber.textContent = '88';
-            scoreDesc.textContent = 'Banyak sinyal risiko terdeteksi. Jangan bagikan sebelum diverifikasi lebih lanjut.';
-
-            setAnalysis('kredibilitas', 90, 'Domain tidak dikenal dan tidak terdaftar sebagai media resmi.');
-            setAnalysis('bahasa',      85, 'Bahasa sangat provokatif dan memancing emosi.');
-            setAnalysis('fakta',       92, 'Tidak ada kecocokan dengan basis fakta pembanding.');
-            setAnalysis('konteks',     80, 'Konteks artikel tidak lengkap dan menyesatkan.');
-
-            nextStepText.textContent = 'Jangan bagikan. Laporkan ke Kominfo atau platform terkait.';
-
-        } else {
-            verdictBadge.classList.add('yellow');
-            verdictBadgeIcon.textContent = '!';
-            verdictBadgeT.textContent = 'YELLOW';
-            verdictBadgeS.textContent = 'Perlu verifikasi';
-            resultTitle.textContent = 'Artikel memerlukan verifikasi tambahan';
-            scoreNumber.textContent = '68';
-            scoreDesc.textContent = 'Beberapa sinyal membutuhkan pemeriksaan sumber primer sebelum artikel dibagikan.';
-
-            setAnalysis('kredibilitas', 40, 'Domain belum berada pada daftar sumber yang telah dikurasi.');
-            setAnalysis('bahasa',      45, 'Frasa mendesak atau emosional perlu dibaca lebih hati-hati.');
-            setAnalysis('fakta',       55, 'Belum ada kecocokan yang cukup pada basis fakta pembanding.');
-            setAnalysis('konteks',     50, 'Bandingkan judul, tanggal, kutipan, dan konteks artikel lengkap.');
-
-            nextStepText.textContent = 'Temukan sumber primer, cek tanggal publikasi, dan cari liputan dari media terpercaya lainnya.';
-        }
+        setPlaceholderAnalysis(level);
+        renderSources(data.sources);
 
         resultSection.scrollIntoView({ behavior: 'smooth' });
     }
 
-    btnAnalys.addEventListener('click', function () {
+    async function checkArticle(url) {
+        const response = await fetch(API_BASE_URL + '/api/check', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ content: url }),
+        });
+
+        if (!response.ok) {
+            const errBody = await response.json().catch(() => ({}));
+            throw new Error(errBody.detail || 'Gagal memeriksa artikel. Coba lagi.');
+        }
+
+        return response.json();
+    }
+
+    btnAnalys.addEventListener('click', async function () {
         const url = inputUrl.value.trim();
         if (url === '') {
             showModal('Perhatian', 'Silakan masukkan URL artikel terlebih dahulu!');
@@ -243,14 +297,14 @@
         resultSection.classList.add('hidden');
         loadingSection.classList.remove('hidden');
 
-        setTimeout(() => {
-            const r = Math.random();
-            let level = 'yellow';
-            if (r > 0.66)      level = 'red';
-            else if (r < 0.33) level = 'green';
-
-            showResult(level);
-        }, 2000);
+        try {
+            const data = await checkArticle(url);
+            showResult(data);
+        } catch (err) {
+            loadingSection.classList.add('hidden');
+            heroWrapper.classList.remove('hidden');
+            showModal('Terjadi Kesalahan', err.message || 'Gagal menghubungi server. Coba lagi nanti.');
+        }
     });
 
     resetBtn.addEventListener('click', function () {
