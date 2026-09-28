@@ -15,13 +15,6 @@
             <nav class="nav-links">
                 <a href="index.html" class="active">Periksa Berita</a>
                 <a href="account.html">Akun</a>
-                <span class="nav-divider"></span>
-                <button type="button" class="theme-toggle" id="themeToggle" aria-label="Ganti tema">
-                    <span class="toggle-knob">
-                        <span class="icon-sun">☀️</span>
-                        <span class="icon-moon">🌙</span>
-                    </span>
-                </button>
             </nav>
         </div>
         <div id="hero-wrapper">
@@ -138,34 +131,12 @@
             <div class="modal-icon">!</div>
             <h3 id="modal-title">Perhatian</h3>
             <p id="modal-message">Pesan error</p>
+            <button id="modal-action-btn" class="btn-primary hidden"></button>
             <button id="modal-close-btn" class="btn-primary">OK</button>
         </div>
     </div>
 
     <script>
-    // ===== Dark / Light mode toggle =====
-    (function () {
-        const root = document.documentElement;
-        const toggleBtn = document.getElementById('themeToggle');
-
-        function applyTheme(theme) {
-            root.setAttribute('data-theme', theme);
-            try { localStorage.setItem('theme', theme); } catch (e) {}
-        }
-
-        let saved = 'light';
-        try { saved = localStorage.getItem('theme') || 'light'; } catch (e) {}
-        if (saved !== 'dark' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            saved = 'dark';
-        }
-        applyTheme(saved);
-
-        toggleBtn.addEventListener('click', function () {
-            const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-            applyTheme(next);
-        });
-    })();
-
     // Ganti sesuai domain Railway backend kamu
     const API_BASE_URL = 'https://hoax-detector-backend-production.up.railway.app';
 
@@ -198,10 +169,29 @@
     const modalTitle        = document.getElementById('modal-title');
     const modalMessage      = document.getElementById('modal-message');
     const modalCloseBtn     = document.getElementById('modal-close-btn');
+    const modalActionBtn    = document.getElementById('modal-action-btn');
 
-    function showModal(title, message) {
+    function getToken() {
+        return localStorage.getItem('myfakta_token');
+    }
+    function clearToken() {
+        localStorage.removeItem('myfakta_token');
+    }
+
+    // action (opsional): { label: 'Masuk', href: 'account.html' } -> tombol tambahan di modal
+    function showModal(title, message, action) {
         modalTitle.textContent = title;
         modalMessage.textContent = message;
+
+        if (action) {
+            modalActionBtn.textContent = action.label;
+            modalActionBtn.onclick = () => { window.location.href = action.href; };
+            modalActionBtn.classList.remove('hidden');
+        } else {
+            modalActionBtn.classList.add('hidden');
+            modalActionBtn.onclick = null;
+        }
+
         modalOverlay.classList.remove('hidden');
     }
 
@@ -310,15 +300,21 @@
     }
 
     async function checkArticle(url) {
+        const token = getToken();
         const response = await fetch(API_BASE_URL + '/api/check', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            },
             body: JSON.stringify({ content: url }),
         });
 
         if (!response.ok) {
             const errBody = await response.json().catch(() => ({}));
-            throw new Error(errBody.detail || 'Gagal memeriksa artikel. Coba lagi.');
+            const error = new Error(errBody.detail || 'Gagal memeriksa artikel. Coba lagi.');
+            error.status = response.status;
+            throw error;
         }
 
         return response.json();
@@ -331,6 +327,16 @@
             return;
         }
 
+        // Belum login: langsung arahkan ke halaman masuk/daftar
+        if (!getToken()) {
+            showModal(
+                'Masuk Dulu',
+                'Kamu perlu masuk atau daftar untuk memeriksa artikel. Gratis 3 pemeriksaan setiap hari.',
+                { label: 'Masuk / Daftar', href: 'account.html' }
+            );
+            return;
+        }
+
         resultSection.classList.add('hidden');
         loadingSection.classList.remove('hidden');
 
@@ -340,7 +346,25 @@
         } catch (err) {
             loadingSection.classList.add('hidden');
             heroWrapper.classList.remove('hidden');
-            showModal('Terjadi Kesalahan', err.message || 'Gagal menghubungi server. Coba lagi nanti.');
+
+            if (err.status === 401) {
+                // Token tidak valid / kedaluwarsa
+                clearToken();
+                showModal(
+                    'Sesi Berakhir',
+                    'Sesi login kamu sudah berakhir. Silakan masuk lagi.',
+                    { label: 'Masuk', href: 'account.html' }
+                );
+            } else if (err.status === 429) {
+                // Jatah harian habis
+                showModal(
+                    'Batas Harian Tercapai',
+                    err.message,
+                    { label: 'Lihat Paket', href: 'account.html' }
+                );
+            } else {
+                showModal('Terjadi Kesalahan', err.message || 'Gagal menghubungi server. Coba lagi nanti.');
+            }
         }
     });
 
