@@ -3,6 +3,7 @@ body {
     background: #f5f8fc;
     color: #10233f;
     font: 15px system-ui;
+    transition: background 0.35s ease, color 0.35s ease;
 }
 
 .page {
@@ -15,6 +16,7 @@ body {
     color: #3469ec;
     font-size: 21px;
     font-weight: 800;
+    text-decoration: none;
 }
 
 .judul {
@@ -30,12 +32,17 @@ body {
     line-height: 1.03;
 }
 
+.judul p {
+    color: #475569;
+}
+
 .input {
     background: #fff;
     border: 1px solid #dce5f1;
     border-radius: 18px;
     margin-top: 24px;
     padding: 22px;
+    transition: background 0.35s ease, border-color 0.35s ease;
 }
 
 .input label {
@@ -55,6 +62,8 @@ button {
 input {
     background: #fbfcff;
     border: 1px solid #cfd9e8;
+    color: #10233f;
+    transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 button {
@@ -118,6 +127,7 @@ button:hover {
     border-radius: 20px;
     padding: 32px;
     box-shadow: 0 8px 30px rgba(16, 35, 63, 0.06);
+    transition: background 0.35s ease, border-color 0.35s ease;
 }
 
 .result-header {
@@ -345,7 +355,7 @@ button:hover {
     padding: 20px;
     cursor: pointer;
     overflow: hidden;
-    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.35s ease;
 }
 
 .analysis-card:hover {
@@ -480,6 +490,7 @@ button:hover {
     text-align: center;
     box-shadow: 0 20px 60px rgba(16, 35, 63, 0.25);
     animation: popIn 0.25s ease;
+    transition: background 0.35s ease;
 }
 
 .modal-icon {
@@ -600,3 +611,172 @@ button:hover {
         max-width: 100%;
     }
 }
+
+/* ============================================
+   BARU: brand-row/nav-links (sebelumnya kosong)
+   + tombol dark/light mode
+   ============================================ */
+
+.brand-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    font-size: 14.5px;
+    font-weight: 600;
+    color: #64748b;
+    padding-bottom: 4px;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.nav-links a:hover { color: #10233f; }
+
+.nav-links a.active {
+    color: #3469ec;
+    border-color: #3469ec;
+}
+
+.nav-divider {
+    width: 1px;
+    height: 20px;
+    background: #dce5f1;
+}
+
+.theme-toggle {
+    width: 48px !important;
+    height: 26px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 1px solid #dce5f1;
+    border-radius: 999px;
+    background: #eef2f8 !important;
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    flex-shrink: 0;
+    transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.theme-toggle:hover {
+    background: #e4e9f4 !important;
+}
+
+.toggle-knob {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 2px 6px rgba(16, 35, 63, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    transition: transform 0.35s cubic-bezier(.16,1,.3,1);
+    pointer-events: none;
+}
+
+.icon-sun, .icon-moon {
+    position: absolute;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.icon-sun  { opacity: 1; transform: scale(1); }
+.icon-moon { opacity: 0; transform: scale(0.5); }
+
+/* ============================================
+   BARU: mode gelap (aktif saat <html data-theme="dark">)
+   ============================================ */
+
+html[data-theme="dark"] body {
+    background: #0f1521;
+    color: #e2e8f5;
+}
+
+html[data-theme="dark"] .brand { color: #6c93ff; }
+
+html[data-theme="dark"] .nav-links a { color: #93a1b8; }
+html[data-theme="dark"] .nav-links a:hover { color: #e2e8f5; }
+html[data-theme="dark"] .nav-links a.active { color: #6c93ff; border-color: #6c93ff; }
+html[data-theme="dark"] .nav-divider { background: #2a3348; }
+
+html[data-theme="dark"] .judul p { color: #93a1b8; }
+
+html[data-theme="dark"] .input {
+    background: #171f30;
+    border-color: #262f42;
+}
+html[data-theme="dark"] input {
+    background: #10192a;
+    border-color: #262f42;
+    color: #e2e8f5;
+}
+
+html[data-theme="dark"] .theme-toggle {
+    background: #262f42 !important;
+    border-color: #333f57;
+}
+html[data-theme="dark"] .theme-toggle:hover {
+    background: #2d3852 !important;
+}
+html[data-theme="dark"] .toggle-knob {
+    transform: translateX(22px);
+    background: #10192a;
+}
+html[data-theme="dark"] .icon-sun  { opacity: 0; transform: scale(0.5); }
+html[data-theme="dark"] .icon-moon { opacity: 1; transform: scale(1); }
+
+html[data-theme="dark"] .result-card {
+    background: #171f30;
+    border-color: #262f42;
+}
+html[data-theme="dark"] .result-header-text h2 { color: #e2e8f5; }
+html[data-theme="dark"] .result-url { color: #7c8aa3; }
+
+html[data-theme="dark"] .verdict-panel {
+    background: #10192a;
+    border-color: #262f42;
+}
+html[data-theme="dark"] .verdict-panel.status-green {
+    background: #0d1f1a; border-color: #1d4b3b;
+}
+html[data-theme="dark"] .verdict-panel.status-yellow {
+    background: #241d0d; border-color: #55431b;
+}
+html[data-theme="dark"] .verdict-panel.status-red {
+    background: #26130f; border-color: #5c2721;
+}
+html[data-theme="dark"] #score-number { color: #e2e8f5; }
+html[data-theme="dark"] .verdict-score-label,
+html[data-theme="dark"] .verdict-score-max { color: #7c8aa3; }
+html[data-theme="dark"] .verdict-summary,
+html[data-theme="dark"] .verdict-action p { color: #b3bfd4; }
+html[data-theme="dark"] .verdict-action-title { color: #e2e8f5; }
+html[data-theme="dark"] .verdict-divider { background: rgba(226,232,245,0.1); }
+html[data-theme="dark"] .verdict-action { border-top-color: rgba(226,232,245,0.12); }
+
+html[data-theme="dark"] .analysis-card {
+    background: #171f30;
+    border-color: #262f42;
+}
+html[data-theme="dark"] .analysis-card:hover { border-color: #3a4763; }
+html[data-theme="dark"] .analysis-card h3 { color: #e2e8f5; }
+html[data-theme="dark"] .analysis-card p { color: #93a1b8; }
+html[data-theme="dark"] .mini-bar { background: #10192a; }
+
+html[data-theme="dark"] .modal-box { background: #171f30; }
+html[data-theme="dark"] .modal-box h3 { color: #e2e8f5; }
+html[data-theme="dark"] .modal-box p { color: #b3bfd4; }

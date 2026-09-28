@@ -47,6 +47,7 @@
     border: 1px solid #dce5f1;
     border-radius: 18px;
     padding: 22px;
+    transition: background 0.35s ease, border-color 0.35s ease;
 }
 
 .auth-tabs {
@@ -56,6 +57,7 @@
     background: #f5f8fc;
     border-radius: 10px;
     padding: 4px;
+    transition: background 0.35s ease;
 }
 
 .auth-tab {
@@ -198,6 +200,7 @@
     border-radius: 10px;
     padding: 12px 14px;
     margin-bottom: 16px;
+    transition: background 0.35s ease, border-color 0.35s ease;
 }
 
 .apikey-box code {
@@ -262,4 +265,66 @@
 @media (max-width: 640px) {
     .auth-wrapper { margin: 32px auto; }
     .profile-wrapper { margin-top: 24px; }
+}
+
+/* ============================================
+   BARU: dark mode untuk elemen khusus halaman Akun
+   ============================================ */
+
+html[data-theme="dark"] .auth-card {
+    background: #171f30;
+    border-color: #262f42;
+}
+
+html[data-theme="dark"] .auth-tabs {
+    background: #10192a;
+}
+
+html[data-theme="dark"] .auth-tab {
+    color: #93a1b8;
+}
+html[data-theme="dark"] .auth-tab.active {
+    background: #262f42;
+    color: #e2e8f5;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+html[data-theme="dark"] .profile-header h2 { color: #e2e8f5; }
+
+html[data-theme="dark"] .status-pill.status-active {
+    background: #0d1f1a;
+    color: #4ade80;
+}
+html[data-theme="dark"] .status-pill.status-inactive {
+    background: #262f42;
+    color: #93a1b8;
+}
+html[data-theme="dark"] .plan-expiry { color: #7c8aa3; }
+
+html[data-theme="dark"] .plan-title { color: #e2e8f5; }
+html[data-theme="dark"] .plan-desc { color: #93a1b8; }
+html[data-theme="dark"] .plan-desc code {
+    background: #262f42;
+    color: #e2e8f5;
+}
+
+html[data-theme="dark"] .price-amount { color: #e2e8f5; }
+html[data-theme="dark"] .price-period { color: #7c8aa3; }
+
+html[data-theme="dark"] .apikey-box {
+    background: #10192a;
+    border-color: #262f42;
+}
+html[data-theme="dark"] .apikey-box code { color: #e2e8f5; }
+
+html[data-theme="dark"] .code-sample { background: #0a1220; }
+
+html[data-theme="dark"] .sources-title { color: #e2e8f5; }
+html[data-theme="dark"] .sources-list li a {
+    background: #10192a;
+    border-color: #262f42;
+    color: #6c93ff;
+}
+html[data-theme="dark"] .sources-list li a:hover {
+    border-color: #6c93ff;
 }
