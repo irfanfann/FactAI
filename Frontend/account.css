@@ -47,7 +47,6 @@
     border: 1px solid #dce5f1;
     border-radius: 18px;
     padding: 22px;
-    transition: background 0.35s ease, border-color 0.35s ease;
 }
 
 .auth-tabs {
@@ -57,7 +56,6 @@
     background: #f5f8fc;
     border-radius: 10px;
     padding: 4px;
-    transition: background 0.35s ease;
 }
 
 .auth-tab {
@@ -200,7 +198,6 @@
     border-radius: 10px;
     padding: 12px 14px;
     margin-bottom: 16px;
-    transition: background 0.35s ease, border-color 0.35s ease;
 }
 
 .apikey-box code {
@@ -267,64 +264,129 @@
     .profile-wrapper { margin-top: 24px; }
 }
 
-/* ============================================
-   BARU: dark mode untuk elemen khusus halaman Akun
-   ============================================ */
-
-html[data-theme="dark"] .auth-card {
-    background: #171f30;
-    border-color: #262f42;
+/* ===== Modal: tombol aksi tambahan ===== */
+.modal-box #modal-action-btn {
+    margin-bottom: 4px;
 }
 
-html[data-theme="dark"] .auth-tabs {
-    background: #10192a;
+.modal-box #modal-close-btn.has-action,
+.modal-box #modal-action-btn:not(.hidden) + #modal-close-btn {
+    background: transparent;
+    color: #64748b;
+    border: 1px solid #dce5f1;
 }
 
-html[data-theme="dark"] .auth-tab {
-    color: #93a1b8;
-}
-html[data-theme="dark"] .auth-tab.active {
-    background: #262f42;
-    color: #e2e8f5;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+.modal-box #modal-action-btn:not(.hidden) + #modal-close-btn:hover {
+    background: #f5f8fc;
 }
 
-html[data-theme="dark"] .profile-header h2 { color: #e2e8f5; }
-
-html[data-theme="dark"] .status-pill.status-active {
-    background: #0d1f1a;
-    color: #4ade80;
-}
-html[data-theme="dark"] .status-pill.status-inactive {
-    background: #262f42;
-    color: #93a1b8;
-}
-html[data-theme="dark"] .plan-expiry { color: #7c8aa3; }
-
-html[data-theme="dark"] .plan-title { color: #e2e8f5; }
-html[data-theme="dark"] .plan-desc { color: #93a1b8; }
-html[data-theme="dark"] .plan-desc code {
-    background: #262f42;
-    color: #e2e8f5;
+/* ===== Section heading ===== */
+.section-heading {
+    margin: 32px 0 6px;
+    font-size: 17px;
+    color: #10233f;
 }
 
-html[data-theme="dark"] .price-amount { color: #e2e8f5; }
-html[data-theme="dark"] .price-period { color: #7c8aa3; }
-
-html[data-theme="dark"] .apikey-box {
-    background: #10192a;
-    border-color: #262f42;
+/* ===== Kartu jatah harian ===== */
+.quota-card {
+    padding: 22px 24px;
 }
-html[data-theme="dark"] .apikey-box code { color: #e2e8f5; }
 
-html[data-theme="dark"] .code-sample { background: #0a1220; }
-
-html[data-theme="dark"] .sources-title { color: #e2e8f5; }
-html[data-theme="dark"] .sources-list li a {
-    background: #10192a;
-    border-color: #262f42;
-    color: #6c93ff;
+.quota-bar {
+    background: #eef2f8;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 4px 0 12px;
 }
-html[data-theme="dark"] .sources-list li a:hover {
-    border-color: #6c93ff;
+
+.quota-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 4px;
+    background: #3469ec;
+    transition: width 0.6s ease, background 0.3s ease;
+}
+
+.quota-fill.full {
+    background: #f87171;
+}
+
+.quota-note {
+    margin: 0;
+    font-size: 13px;
+}
+
+/* ===== Pilihan paket ===== */
+.plan-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 14px;
+}
+
+.plan-option {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    margin: 0;
+    padding: 18px 16px;
+    background: #fff;
+    color: #10233f;
+    border: 1px solid #dce5f1;
+    border-radius: 14px;
+    text-align: left;
+    font-weight: 400;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.plan-option:hover {
+    background: #fff;
+    border-color: #3469ec;
+    box-shadow: 0 10px 24px rgba(52, 105, 236, 0.12);
+    transform: translateY(-2px);
+}
+
+.plan-option.featured {
+    border-color: #3469ec;
+    box-shadow: 0 0 0 1px #3469ec;
+}
+
+.plan-option-tag {
+    position: absolute;
+    top: -10px;
+    right: 12px;
+    background: #3469ec;
+    color: #fff;
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    padding: 3px 9px;
+    border-radius: 999px;
+}
+
+.plan-option-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #64748b;
+}
+
+.plan-option-price {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.6px;
+    color: #10233f;
+}
+
+.plan-option-note {
+    font-size: 12px;
+    color: #8894a7;
+}
+
+@media (max-width: 640px) {
+    .plan-grid {
+        grid-template-columns: 1fr;
+    }
 }
