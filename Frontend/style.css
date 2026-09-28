@@ -780,3 +780,110 @@ html[data-theme="dark"] .mini-bar { background: #10192a; }
 html[data-theme="dark"] .modal-box { background: #171f30; }
 html[data-theme="dark"] .modal-box h3 { color: #e2e8f5; }
 html[data-theme="dark"] .modal-box p { color: #b3bfd4; }
+
+/* ============================================
+   Status auth di navbar (index.html)
+   ============================================ */
+
+.nav-links a.nav-auth-btn {
+    background: #3469ec;
+    color: #fff;
+    padding: 9px 18px;
+    border: 0;
+    border-radius: 10px;
+    font-weight: 700;
+    transition: background 0.2s ease;
+}
+
+.nav-links a.nav-auth-btn:hover {
+    background: #2a55c9;
+    color: #fff;
+}
+
+.nav-links a.nav-account-chip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 14px 6px 6px;
+    background: #fff;
+    border: 1px solid #dce5f1;
+    border-bottom: 1px solid #dce5f1;
+    border-radius: 999px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.35s ease;
+}
+
+.nav-links a.nav-account-chip:hover {
+    border-color: #3469ec;
+    box-shadow: 0 6px 16px rgba(52, 105, 236, 0.12);
+}
+
+.nav-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #3469ec;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.nav-account-info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+    min-width: 0;
+}
+
+.nav-account-email {
+    font-size: 13px;
+    font-weight: 700;
+    color: #10233f;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.nav-account-quota {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #64748b;
+}
+
+.nav-account-quota.pro   { color: #059669; }
+.nav-account-quota.empty { color: #dc2626; }
+
+@media (max-width: 640px) {
+    .nav-links { gap: 12px; }
+
+    /* Di HP: chip hanya avatar, teks disembunyikan */
+    .nav-account-info { display: none; }
+    .nav-links a.nav-account-chip { padding: 4px; }
+
+    .nav-links a.nav-auth-btn { padding: 8px 14px; font-size: 13px; }
+}
+
+/* ----- Mode gelap ----- */
+html[data-theme="dark"] .nav-links a.nav-auth-btn {
+    background: #6c93ff;
+    color: #0f1521;
+}
+html[data-theme="dark"] .nav-links a.nav-auth-btn:hover { background: #8aa9ff; }
+
+html[data-theme="dark"] .nav-links a.nav-account-chip {
+    background: #171f30;
+    border-color: #262f42;
+}
+html[data-theme="dark"] .nav-links a.nav-account-chip:hover {
+    border-color: #6c93ff;
+    box-shadow: 0 6px 16px rgba(108, 147, 255, 0.14);
+}
+html[data-theme="dark"] .nav-avatar { background: #6c93ff; color: #0f1521; }
+html[data-theme="dark"] .nav-account-email { color: #e2e8f5; }
+html[data-theme="dark"] .nav-account-quota { color: #93a1b8; }
+html[data-theme="dark"] .nav-account-quota.pro   { color: #34d399; }
+html[data-theme="dark"] .nav-account-quota.empty { color: #f87171; }

@@ -25,7 +25,19 @@
             <a href="index.html" class="brand">MyFakta</a>
             <nav class="nav-links">
                 <a href="index.html" class="active">Periksa Berita</a>
-                <a href="account.html">Akun</a>
+
+                <!-- Belum login -->
+                <a href="account.html" id="nav-login-btn" class="nav-auth-btn hidden">Masuk / Daftar</a>
+
+                <!-- Sudah login -->
+                <a href="account.html" id="nav-account-chip" class="nav-account-chip hidden" title="Buka akun saya">
+                    <span class="nav-avatar" id="nav-avatar">?</span>
+                    <span class="nav-account-info">
+                        <span class="nav-account-email" id="nav-email">-</span>
+                        <span class="nav-account-quota" id="nav-quota">Memuat...</span>
+                    </span>
+                </a>
+
                 <span class="nav-divider"></span>
                 <button type="button" class="theme-toggle" id="themeToggle" aria-label="Ganti tema">
                     <span class="toggle-knob">
@@ -241,6 +253,69 @@
         modalOverlay.classList.add('hidden');
     }
 
+    // ===== Status auth di navbar =====
+    const navLoginBtn    = document.getElementById('nav-login-btn');
+    const navAccountChip = document.getElementById('nav-account-chip');
+    const navAvatar      = document.getElementById('nav-avatar');
+    const navEmail       = document.getElementById('nav-email');
+    const navQuota       = document.getElementById('nav-quota');
+
+    function showNavGuest() {
+        navAccountChip.classList.add('hidden');
+        navLoginBtn.classList.remove('hidden');
+    }
+
+    function showNavUser(profile) {
+        navLoginBtn.classList.add('hidden');
+        navAccountChip.classList.remove('hidden');
+
+        navAvatar.textContent = (profile.email || '?').charAt(0).toUpperCase();
+        navEmail.textContent = profile.email;
+
+        if (profile.is_subscribed) {
+            navQuota.textContent = 'Tanpa batas';
+            navQuota.className = 'nav-account-quota pro';
+        } else {
+            const limit = profile.daily_limit || 3;
+            const used = profile.checks_used_today || 0;
+            const left = Math.max(0, limit - used);
+            navQuota.textContent = 'Sisa ' + left + ' dari ' + limit + ' hari ini';
+            navQuota.className = 'nav-account-quota' + (left === 0 ? ' empty' : '');
+        }
+    }
+
+    async function refreshNavAuth() {
+        const token = getToken();
+        if (!token) {
+            showNavGuest();
+            return;
+        }
+
+        // Tampilkan chip dulu supaya tidak berkedip saat menunggu server
+        navLoginBtn.classList.add('hidden');
+        navAccountChip.classList.remove('hidden');
+
+        try {
+            const response = await fetch(API_BASE_URL + '/api/account/me', {
+                headers: { 'Authorization': 'Bearer ' + token },
+            });
+
+            if (response.status === 401) {
+                // Token tidak valid / kedaluwarsa
+                clearToken();
+                showNavGuest();
+                return;
+            }
+            if (!response.ok) throw new Error('Gagal memuat profil');
+
+            showNavUser(await response.json());
+        } catch (err) {
+            // Server bermasalah: jangan logout, cukup tampilkan chip tanpa data jatah
+            navEmail.textContent = 'Akun saya';
+            navQuota.textContent = 'Lihat detail';
+        }
+    }
+
     // 4 kartu analisis (kredibilitas/bahasa/fakta/konteks) masih PLACEHOLDER,
     // belum dihitung oleh backend. Diisi angka generik supaya UI tetap terlihat lengkap,
     // akan diganti data asli setelah Layer 1-2 backend diimplementasikan.
@@ -385,6 +460,7 @@
         try {
             const data = await checkArticle(url);
             showResult(data);
+            refreshNavAuth(); // perbarui sisa jatah di navbar
         } catch (err) {
             loadingSection.classList.add('hidden');
             heroWrapper.classList.remove('hidden');
@@ -392,6 +468,7 @@
             if (err.status === 401) {
                 // Token tidak valid / kedaluwarsa
                 clearToken();
+                showNavGuest();
                 showModal(
                     'Sesi Berakhir',
                     'Sesi login kamu sudah berakhir. Silakan masuk lagi.',
@@ -399,6 +476,7 @@
                 );
             } else if (err.status === 429) {
                 // Jatah harian habis
+                refreshNavAuth();
                 showModal(
                     'Batas Harian Tercapai',
                     err.message,
@@ -422,6 +500,9 @@
     modalOverlay.addEventListener('click', e => {
         if (e.target === modalOverlay) closeModal();
     });
+
+    // ===== Init =====
+    refreshNavAuth();
     </script>
 </body>
 </html>
