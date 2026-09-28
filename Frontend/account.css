@@ -1,41 +1,3 @@
-/* ===== Nav & brand row ===== */
-.brand-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 12px;
-}
-
-.brand-row .brand {
-    text-decoration: none;
-    color: #3469ec;
-}
-
-.nav-links {
-    display: flex;
-    gap: 20px;
-}
-
-.nav-links a {
-    color: #64748b;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 14px;
-    padding: 6px 2px;
-    border-bottom: 2px solid transparent;
-    transition: color 0.2s ease, border-color 0.2s ease;
-}
-
-.nav-links a:hover {
-    color: #3469ec;
-}
-
-.nav-links a.active {
-    color: #3469ec;
-    border-bottom-color: #3469ec;
-}
-
 /* ===== Auth section ===== */
 .auth-wrapper {
     max-width: 420px;
@@ -389,4 +351,97 @@
     .plan-grid {
         grid-template-columns: 1fr;
     }
+}
+
+/* ============================================
+   Mode gelap untuk komponen halaman akun.
+   Palet mengikuti style.css: #0f1521 / #171f30 / #262f42
+   ============================================ */
+
+html[data-theme="dark"] .auth-card {
+    background: #171f30;
+    border-color: #262f42;
+}
+html[data-theme="dark"] .auth-tabs { background: #10192a; }
+html[data-theme="dark"] .auth-tab { color: #93a1b8; }
+html[data-theme="dark"] .auth-tab:hover { background: transparent; color: #6c93ff; }
+html[data-theme="dark"] .auth-tab.active {
+    background: #262f42;
+    color: #e2e8f5;
+    box-shadow: none;
+}
+
+html[data-theme="dark"] .profile-header h2,
+html[data-theme="dark"] .section-heading,
+html[data-theme="dark"] .plan-title { color: #e2e8f5; }
+
+html[data-theme="dark"] .plan-desc,
+html[data-theme="dark"] .plan-expiry,
+html[data-theme="dark"] .price-period { color: #93a1b8; }
+html[data-theme="dark"] .price-amount { color: #e2e8f5; }
+
+html[data-theme="dark"] .plan-desc code {
+    background: #10192a;
+    color: #b3bfd4;
+}
+
+html[data-theme="dark"] .status-pill.status-active {
+    background: #0d1f1a;
+    color: #34d399;
+}
+html[data-theme="dark"] .status-pill.status-inactive {
+    background: #262f42;
+    color: #93a1b8;
+}
+
+/* Kartu jatah harian */
+html[data-theme="dark"] .quota-bar { background: #10192a; }
+html[data-theme="dark"] .quota-fill { background: #6c93ff; }
+html[data-theme="dark"] .quota-fill.full { background: #f87171; }
+
+/* Kartu pilihan paket */
+html[data-theme="dark"] .plan-option {
+    background: #171f30;
+    color: #e2e8f5;
+    border-color: #262f42;
+}
+html[data-theme="dark"] .plan-option:hover {
+    background: #171f30;
+    border-color: #6c93ff;
+    box-shadow: 0 10px 24px rgba(108, 147, 255, 0.14);
+}
+html[data-theme="dark"] .plan-option.featured {
+    border-color: #6c93ff;
+    box-shadow: 0 0 0 1px #6c93ff;
+}
+html[data-theme="dark"] .plan-option-name { color: #93a1b8; }
+html[data-theme="dark"] .plan-option-price { color: #e2e8f5; }
+html[data-theme="dark"] .plan-option-note { color: #7c8aa3; }
+html[data-theme="dark"] .plan-option-tag { background: #6c93ff; color: #0f1521; }
+
+/* API key & contoh kode */
+html[data-theme="dark"] .apikey-box {
+    background: #10192a;
+    border-color: #262f42;
+}
+html[data-theme="dark"] .apikey-box code { color: #e2e8f5; }
+html[data-theme="dark"] .code-sample { background: #0a0f19; }
+
+/* Daftar sumber (halaman utama) */
+html[data-theme="dark"] .sources-title { color: #e2e8f5; }
+html[data-theme="dark"] .sources-list li a {
+    background: #10192a;
+    border-color: #262f42;
+    color: #6c93ff;
+}
+html[data-theme="dark"] .sources-list li a:hover { border-color: #6c93ff; }
+
+/* Modal: tombol OK jadi sekunder saat ada tombol aksi */
+html[data-theme="dark"] .modal-box #modal-action-btn:not(.hidden) + #modal-close-btn {
+    background: transparent;
+    color: #93a1b8;
+    border-color: #333f57;
+}
+html[data-theme="dark"] .modal-box #modal-action-btn:not(.hidden) + #modal-close-btn:hover {
+    background: #262f42;
 }
