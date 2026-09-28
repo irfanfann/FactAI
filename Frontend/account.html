@@ -16,13 +16,6 @@
             <nav class="nav-links">
                 <a href="index.html">Periksa Berita</a>
                 <a href="account.html" class="active">Akun</a>
-                <span class="nav-divider"></span>
-                <button type="button" class="theme-toggle" id="themeToggle" aria-label="Ganti tema">
-                    <span class="toggle-knob">
-                        <span class="icon-sun">☀️</span>
-                        <span class="icon-moon">🌙</span>
-                    </span>
-                </button>
             </nav>
         </div>
 
@@ -50,7 +43,7 @@
                         <input id="register-email" type="email" placeholder="nama@email.com" required/>
 
                         <label for="register-password">Password</label>
-                        <input id="register-password" type="password" placeholder="Minimal 8 karakter" minlength="8" required/>
+                        <input id="register-password" type="password" placeholder="8 sampai 72 karakter" minlength="8" maxlength="72" required/>
 
                         <button type="submit">Buat Akun</button>
                     </form>
@@ -70,35 +63,63 @@
                     <button id="logout-btn" class="btn-secondary btn-slim">Keluar</button>
                 </div>
 
-                <!-- Kondisi: belum subscribe -->
-                <div id="subscribe-card" class="result-card hidden">
-                    <div class="plan-status-row">
-                        <span class="status-pill status-inactive">Belum Berlangganan</span>
+                <!-- Kondisi: akun gratis (belum subscribe / sudah expired) -->
+                <div id="free-view" class="hidden">
+
+                    <div class="result-card quota-card">
+                        <div class="plan-status-row">
+                            <span class="status-pill status-inactive">Akun Gratis</span>
+                            <span class="plan-expiry" id="quota-text">0 dari 3 pemeriksaan hari ini</span>
+                        </div>
+                        <div class="quota-bar"><div class="quota-fill" id="quota-fill"></div></div>
+                        <p class="plan-desc quota-note">Jatah direset setiap hari. Hasil yang sudah pernah diperiksa (dari cache) tidak mengurangi jatah.</p>
                     </div>
-                    <h3 class="plan-title">Akses API Developer</h3>
-                    <p class="plan-desc">Berlangganan untuk mendapatkan API key dan gunakan MyFakta langsung dari aplikasi atau website kamu sendiri.</p>
-                    <div class="price-box">
-                        <span class="price-amount">Rp49.000</span>
-                        <span class="price-period">/ bulan</span>
+
+                    <h3 class="section-heading">Berlangganan untuk tanpa batas</h3>
+                    <p class="plan-desc">Pemeriksaan tanpa batas harian, ditambah API key untuk dipakai di aplikasi atau website kamu sendiri.</p>
+
+                    <div class="plan-grid" id="plan-grid">
+                        <button type="button" class="plan-option" data-plan="monthly">
+                            <span class="plan-option-name">1 Bulan</span>
+                            <span class="plan-option-price">Rp49.000</span>
+                            <span class="plan-option-note">Rp49.000 / bulan</span>
+                        </button>
+
+                        <button type="button" class="plan-option featured" data-plan="five_months">
+                            <span class="plan-option-tag">Hemat</span>
+                            <span class="plan-option-name">5 Bulan</span>
+                            <span class="plan-option-price">Rp239.000</span>
+                            <span class="plan-option-note">Rp47.800 / bulan</span>
+                        </button>
+
+                        <button type="button" class="plan-option" data-plan="yearly">
+                            <span class="plan-option-tag">Terhemat</span>
+                            <span class="plan-option-name">1 Tahun</span>
+                            <span class="plan-option-price">Rp559.000</span>
+                            <span class="plan-option-note">Rp46.600 / bulan</span>
+                        </button>
                     </div>
-                    <button id="subscribe-btn" class="btn-primary">Berlangganan Sekarang</button>
                 </div>
 
-                <!-- Kondisi: sudah subscribe aktif -->
-                <div id="active-card" class="result-card hidden">
-                    <div class="plan-status-row">
-                        <span class="status-pill status-active">Aktif</span>
-                        <span class="plan-expiry" id="plan-expiry">Berlaku hingga -</span>
-                    </div>
-                    <h3 class="plan-title">API Key Kamu</h3>
-                    <p class="plan-desc">Gunakan key ini pada header <code>X-API-Key</code> saat memanggil endpoint <code>/api/v1/check</code>.</p>
+                <!-- Kondisi: subscription aktif -->
+                <div id="active-view" class="hidden">
+                    <div class="result-card">
+                        <div class="plan-status-row">
+                            <span class="status-pill status-active" id="active-plan-pill">Aktif</span>
+                            <span class="plan-expiry" id="plan-expiry">Berlaku hingga -</span>
+                        </div>
+                        <h3 class="plan-title">Pemeriksaan Tanpa Batas</h3>
+                        <p class="plan-desc">Kamu bisa memeriksa artikel sebanyak yang dibutuhkan selama langganan aktif.</p>
 
-                    <div class="apikey-box">
-                        <code id="api-key-value">-</code>
-                        <button id="copy-key-btn" class="btn-slim">Salin</button>
-                    </div>
+                        <h3 class="plan-title">API Key Kamu</h3>
+                        <p class="plan-desc">Gunakan key ini pada header <code>X-API-Key</code> saat memanggil endpoint <code>/api/v1/check</code>.</p>
 
-                    <div class="code-sample">
+                        <div class="apikey-box">
+                            <code id="api-key-value">-</code>
+                            <button id="copy-key-btn" class="btn-slim">Salin</button>
+                        </div>
+
+                        <div class="code-sample">
 <pre id="code-sample-text">fetch('https://hoax-detector-backend-production.up.railway.app/api/v1/check', {
   method: 'POST',
   headers: {
@@ -107,6 +128,27 @@
   },
   body: JSON.stringify({ content: 'klaim yang mau dicek' })
 })</pre>
+                        </div>
+                    </div>
+
+                    <h3 class="section-heading">Perpanjang langganan</h3>
+                    <p class="plan-desc">Masa aktif baru ditambahkan setelah masa aktif kamu yang sekarang berakhir.</p>
+
+                    <div class="plan-grid" id="renew-grid">
+                        <button type="button" class="plan-option" data-plan="monthly">
+                            <span class="plan-option-name">1 Bulan</span>
+                            <span class="plan-option-price">Rp49.000</span>
+                        </button>
+                        <button type="button" class="plan-option featured" data-plan="five_months">
+                            <span class="plan-option-tag">Hemat</span>
+                            <span class="plan-option-name">5 Bulan</span>
+                            <span class="plan-option-price">Rp239.000</span>
+                        </button>
+                        <button type="button" class="plan-option" data-plan="yearly">
+                            <span class="plan-option-tag">Terhemat</span>
+                            <span class="plan-option-name">1 Tahun</span>
+                            <span class="plan-option-price">Rp559.000</span>
+                        </button>
                     </div>
                 </div>
 
@@ -129,30 +171,8 @@
     </div>
 
     <script>
-    // ===== Dark / Light mode toggle (sama persis dengan index.html, pakai key localStorage yang sama) =====
-    (function () {
-        const root = document.documentElement;
-        const toggleBtn = document.getElementById('themeToggle');
-
-        function applyTheme(theme) {
-            root.setAttribute('data-theme', theme);
-            try { localStorage.setItem('theme', theme); } catch (e) {}
-        }
-
-        let saved = 'light';
-        try { saved = localStorage.getItem('theme') || 'light'; } catch (e) {}
-        if (saved !== 'dark' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            saved = 'dark';
-        }
-        applyTheme(saved);
-
-        toggleBtn.addEventListener('click', function () {
-            const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-            applyTheme(next);
-        });
-    })();
-
     const API_BASE_URL = 'https://hoax-detector-backend-production.up.railway.app';
+    const CODE_SAMPLE_TEMPLATE = document.getElementById('code-sample-text').textContent;
 
     // ---------- Elemen ----------
     const authSection      = document.getElementById('auth-section');
@@ -160,27 +180,35 @@
     const loadingSection   = document.getElementById('loading-section');
     const loadingText      = document.getElementById('loading-text');
 
-    const tabLogin          = document.getElementById('tab-login');
-    const tabRegister       = document.getElementById('tab-register');
-    const loginForm         = document.getElementById('login-form');
-    const registerForm      = document.getElementById('register-form');
+    const tabLogin         = document.getElementById('tab-login');
+    const tabRegister      = document.getElementById('tab-register');
+    const loginForm        = document.getElementById('login-form');
+    const registerForm     = document.getElementById('register-form');
 
-    const profileEmail      = document.getElementById('profile-email');
-    const logoutBtn         = document.getElementById('logout-btn');
+    const profileEmail     = document.getElementById('profile-email');
+    const logoutBtn        = document.getElementById('logout-btn');
 
-    const subscribeCard     = document.getElementById('subscribe-card');
-    const subscribeBtn      = document.getElementById('subscribe-btn');
+    const freeView         = document.getElementById('free-view');
+    const quotaText        = document.getElementById('quota-text');
+    const quotaFill        = document.getElementById('quota-fill');
 
-    const activeCard        = document.getElementById('active-card');
-    const planExpiry        = document.getElementById('plan-expiry');
-    const apiKeyValue        = document.getElementById('api-key-value');
-    const copyKeyBtn        = document.getElementById('copy-key-btn');
-    const codeSampleText    = document.getElementById('code-sample-text');
+    const activeView       = document.getElementById('active-view');
+    const activePlanPill   = document.getElementById('active-plan-pill');
+    const planExpiry       = document.getElementById('plan-expiry');
+    const apiKeyValue      = document.getElementById('api-key-value');
+    const copyKeyBtn       = document.getElementById('copy-key-btn');
+    const codeSampleText   = document.getElementById('code-sample-text');
 
-    const modalOverlay      = document.getElementById('modal-overlay');
-    const modalTitle        = document.getElementById('modal-title');
-    const modalMessage      = document.getElementById('modal-message');
-    const modalCloseBtn     = document.getElementById('modal-close-btn');
+    const modalOverlay     = document.getElementById('modal-overlay');
+    const modalTitle       = document.getElementById('modal-title');
+    const modalMessage     = document.getElementById('modal-message');
+    const modalCloseBtn    = document.getElementById('modal-close-btn');
+
+    const PLAN_LABELS = {
+        monthly: '1 Bulan',
+        five_months: '5 Bulan',
+        yearly: '1 Tahun',
+    };
 
     // ---------- Helper ----------
     function showModal(title, message) {
@@ -217,9 +245,21 @@
         const body = await response.json().catch(() => ({}));
 
         if (!response.ok) {
-            throw new Error(body.detail || 'Terjadi kesalahan, coba lagi.');
+            const error = new Error(formatError(body.detail));
+            error.status = response.status;
+            throw error;
         }
         return body;
+    }
+
+    // Validasi 422 dari FastAPI berupa array objek, bukan string. Ubah jadi teks yang enak dibaca.
+    function formatError(detail) {
+        if (!detail) return 'Terjadi kesalahan, coba lagi.';
+        if (typeof detail === 'string') return detail;
+        if (Array.isArray(detail)) {
+            return detail.map(d => d.msg || 'Input tidak valid').join('. ');
+        }
+        return 'Terjadi kesalahan, coba lagi.';
     }
 
     // ---------- Tab switch (login/register) ----------
@@ -290,8 +330,14 @@
             renderProfile(profile);
         } catch (err) {
             hideLoading();
-            clearToken();
-            showAuthView();
+            // Hanya hapus token kalau memang tidak valid (401). Error lain (server down, dll) jangan bikin user ke-logout.
+            if (err.status === 401) {
+                clearToken();
+                showAuthView();
+            } else {
+                showAuthView();
+                showModal('Gagal Memuat Profil', err.message);
+            }
         }
     }
 
@@ -301,22 +347,41 @@
 
         profileEmail.textContent = profile.email;
 
-        if (profile.subscription_status === 'active' && profile.api_key) {
-            subscribeCard.classList.add('hidden');
-            activeCard.classList.remove('hidden');
-
-            apiKeyValue.textContent = profile.api_key;
-            codeSampleText.textContent = codeSampleText.textContent.replace('API_KEY_KAMU', profile.api_key);
-
-            if (profile.subscription_expires_at) {
-                const expiryDate = new Date(profile.subscription_expires_at);
-                planExpiry.textContent = 'Berlaku hingga ' + expiryDate.toLocaleDateString('id-ID', {
-                    day: 'numeric', month: 'long', year: 'numeric'
-                });
-            }
+        // Pakai is_subscribed (dihitung backend dari expiry), bukan subscription_status
+        if (profile.is_subscribed) {
+            renderActiveView(profile);
         } else {
-            activeCard.classList.add('hidden');
-            subscribeCard.classList.remove('hidden');
+            renderFreeView(profile);
+        }
+    }
+
+    function renderFreeView(profile) {
+        activeView.classList.add('hidden');
+        freeView.classList.remove('hidden');
+
+        const used = profile.checks_used_today || 0;
+        const limit = profile.daily_limit || 3;
+        const percent = Math.min(100, Math.round((used / limit) * 100));
+
+        quotaText.textContent = used + ' dari ' + limit + ' pemeriksaan hari ini';
+        quotaFill.style.width = percent + '%';
+        quotaFill.classList.toggle('full', used >= limit);
+    }
+
+    function renderActiveView(profile) {
+        freeView.classList.add('hidden');
+        activeView.classList.remove('hidden');
+
+        activePlanPill.textContent = 'Aktif' + (profile.plan_type ? ' - ' + (PLAN_LABELS[profile.plan_type] || profile.plan_type) : '');
+
+        apiKeyValue.textContent = profile.api_key || '-';
+        codeSampleText.textContent = CODE_SAMPLE_TEMPLATE.replace('API_KEY_KAMU', profile.api_key || 'API_KEY_KAMU');
+
+        if (profile.subscription_expires_at) {
+            const expiryDate = new Date(profile.subscription_expires_at);
+            planExpiry.textContent = 'Berlaku hingga ' + expiryDate.toLocaleDateString('id-ID', {
+                day: 'numeric', month: 'long', year: 'numeric'
+            });
         }
     }
 
@@ -331,35 +396,42 @@
         showAuthView();
     });
 
-    // ---------- Subscribe (Midtrans Snap) ----------
-    subscribeBtn.addEventListener('click', async () => {
+    // ---------- Pilih paket & bayar (Midtrans Snap) ----------
+    async function startCheckout(planType) {
         showLoading('Menyiapkan pembayaran...');
         try {
-            const checkout = await apiFetch('/api/subscription/checkout', { method: 'POST' });
+            const checkout = await apiFetch('/api/subscription/checkout', {
+                method: 'POST',
+                body: JSON.stringify({ plan_type: planType }),
+            });
             hideLoading();
 
             window.snap.pay(checkout.snap_token, {
-                onSuccess: async function () {
+                onSuccess: function () {
                     showLoading('Mengaktifkan langganan...');
-                    // beri jeda singkat supaya webhook Midtrans sempat diproses backend
+                    // Beri jeda supaya webhook Midtrans sempat diproses backend
                     setTimeout(async () => {
                         await loadProfile();
-                    }, 2000);
+                    }, 2500);
                 },
                 onPending: function () {
-                    showModal('Menunggu Pembayaran', 'Pembayaran kamu sedang diproses. Silakan cek kembali halaman ini setelah pembayaran selesai.');
+                    showModal('Menunggu Pembayaran', 'Pembayaran kamu sedang diproses. Silakan muat ulang halaman ini setelah pembayaran selesai.');
                 },
                 onError: function () {
                     showModal('Pembayaran Gagal', 'Terjadi kesalahan saat memproses pembayaran. Silakan coba lagi.');
                 },
                 onClose: function () {
-                    // user menutup popup tanpa menyelesaikan pembayaran, tidak perlu aksi apa pun
+                    // User menutup popup tanpa menyelesaikan pembayaran, tidak perlu aksi
                 }
             });
         } catch (err) {
             hideLoading();
             showModal('Gagal Memulai Pembayaran', err.message);
         }
+    }
+
+    document.querySelectorAll('.plan-option').forEach(btn => {
+        btn.addEventListener('click', () => startCheckout(btn.dataset.plan));
     });
 
     // ---------- Copy API key ----------
