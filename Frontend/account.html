@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="account.css">
     <script src="config.js"></script>
-    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="ISI_CLIENT_KEY_MIDTRANS_KAMU"></script>
+    <script id="midtrans-snap-script" src="https://app.sandbox.midtrans.com/snap/snap.js"></script>
 </head>
 <body>
     <main class="page">
@@ -222,6 +222,7 @@
     })();
 
     const API_BASE_URL = window.API_BASE_URL;
+    document.getElementById('midtrans-snap-script').setAttribute('data-client-key', window.MIDTRANS_CLIENT_KEY);
     const CODE_SAMPLE_TEMPLATE = document.getElementById('code-sample-text').textContent;
 
     const authSection      = document.getElementById('auth-section');
