@@ -16,7 +16,7 @@ The site is plain HTML, CSS, and JavaScript with no build step. It talks to the 
 ### 1. Clone the repo
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/irfanfann/FactAI.git
 cd frontend
 ```
 
