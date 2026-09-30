@@ -505,3 +505,15 @@ html[data-theme="dark"] .modal-box #modal-action-btn:not(.hidden) + #modal-close
 html[data-theme="dark"] .modal-box #modal-action-btn:not(.hidden) + #modal-close-btn:hover {
     background: #262f42;
 }
+
+.recent-history-clickable {
+    cursor: pointer;
+}
+.recent-history-clickable:hover {
+    opacity: 0.85;
+}
+.recent-history-more {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 0.9em;
+}

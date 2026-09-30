@@ -880,3 +880,15 @@ html[data-theme="dark"] .nav-account-email { color: #e2e8f5; }
 html[data-theme="dark"] .nav-account-quota { color: #93a1b8; }
 html[data-theme="dark"] .nav-account-quota.pro   { color: #34d399; }
 html[data-theme="dark"] .nav-account-quota.empty { color: #f87171; }
+
+.recent-history-clickable {
+    cursor: pointer;
+}
+.recent-history-clickable:hover {
+    opacity: 0.85;
+}
+.recent-history-more {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 0.9em;
+}

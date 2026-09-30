@@ -56,6 +56,16 @@
                 <input id="url" placeholder="Masukkan URL artikel.."/>
                 <button id="analys">Periksa Artikel</button>
             </section>
+
+            <section id="recent-history-section" class="hidden">
+                <button type="button" id="recent-history-toggle" class="btn-secondary btn-slim">
+                    Riwayat Terakhir <span id="recent-history-arrow">▾</span>
+                </button>
+                <div id="recent-history-body" class="hidden">
+                    <div id="recent-history-list" class="history-list"></div>
+                    <a href="account.html" class="recent-history-more">Lihat semua riwayat →</a>
+                </div>
+            </section>
         </div>
 
         <section id="result-section" class="hidden">
@@ -214,6 +224,12 @@
 
     const resetBtn          = document.getElementById('reset-btn');
 
+    const recentHistorySection = document.getElementById('recent-history-section');
+    const recentHistoryToggle  = document.getElementById('recent-history-toggle');
+    const recentHistoryArrow   = document.getElementById('recent-history-arrow');
+    const recentHistoryBody    = document.getElementById('recent-history-body');
+    const recentHistoryList    = document.getElementById('recent-history-list');
+
     const modalOverlay      = document.getElementById('modal-overlay');
     const modalTitle        = document.getElementById('modal-title');
     const modalMessage      = document.getElementById('modal-message');
@@ -340,7 +356,7 @@
         }
     }
 
-    function mapVerdictToLevel(verdict) {
+        function mapVerdictToLevel(verdict) {
         switch (verdict) {
             case 'VALID': return 'green';
             case 'HOAX': return 'red';
@@ -349,6 +365,73 @@
             default: return 'yellow';
         }
     }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    async function loadRecentHistory() {
+        const token = getToken();
+        if (!token) {
+            recentHistorySection.classList.add('hidden');
+            return;
+        }
+
+        try {
+            const response = await fetch(API_BASE_URL + '/api/checks/history?page=1&page_size=5', {
+                headers: { 'Authorization': 'Bearer ' + token },
+            });
+            if (!response.ok) throw new Error('Gagal memuat riwayat');
+            const data = await response.json();
+
+            if (!data.items || data.items.length === 0) {
+                recentHistorySection.classList.add('hidden');
+                return;
+            }
+
+            renderRecentHistory(data.items);
+            recentHistorySection.classList.remove('hidden');
+        } catch (err) {
+            recentHistorySection.classList.add('hidden');
+        }
+    }
+
+    function renderRecentHistory(items) {
+        recentHistoryList.innerHTML = '';
+
+        items.forEach(item => {
+            const level = mapVerdictToLevel(item.verdict);
+            const date = new Date(item.created_at).toLocaleDateString('id-ID', {
+                day: 'numeric', month: 'short', year: 'numeric',
+                hour: '2-digit', minute: '2-digit',
+            });
+
+            const div = document.createElement('div');
+            div.className = 'history-item recent-history-clickable';
+            div.innerHTML =
+                '<div class="history-item-main">' +
+                    '<p class="history-item-content">' + escapeHtml(item.content) + '</p>' +
+                    '<span class="history-item-date">' + date + '</span>' +
+                '</div>' +
+                '<span class="history-verdict-pill ' + level + '">' + item.verdict + '</span>';
+
+            div.addEventListener('click', () => {
+                inputUrl.value = item.content;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                inputUrl.focus();
+            });
+
+            recentHistoryList.appendChild(div);
+        });
+    }
+
+    recentHistoryToggle.addEventListener('click', () => {
+        const isHidden = recentHistoryBody.classList.contains('hidden');
+        recentHistoryBody.classList.toggle('hidden');
+        recentHistoryArrow.textContent = isHidden ? '▴' : '▾';
+    });
 
     function renderSources(sources) {
         sourcesList.innerHTML = '';
@@ -459,6 +542,7 @@
             const data = await checkArticle(url);
             showResult(data);
             refreshNavAuth();
+            loadRecentHistory();
         } catch (err) {
             loadingSection.classList.add('hidden');
             heroWrapper.classList.remove('hidden');
@@ -498,6 +582,7 @@
     });
 
     refreshNavAuth();
+    loadRecentHistory();
     </script>
 </body>
 </html>
