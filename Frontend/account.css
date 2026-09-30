@@ -1,4 +1,3 @@
-/* ===== Auth section ===== */
 .auth-wrapper {
     max-width: 420px;
     margin: 64px auto;
@@ -7,7 +6,7 @@
 .auth-card {
     background: #fff;
     border: 1px solid #dce5f1;
-    border-radius: 18px;
+    border-radius: 14px;
     padding: 22px;
 }
 
@@ -16,7 +15,7 @@
     gap: 8px;
     margin-bottom: 18px;
     background: #f5f8fc;
-    border-radius: 10px;
+    border-radius: 9px;
     padding: 4px;
 }
 
@@ -26,8 +25,8 @@
     margin: 0;
     background: transparent;
     color: #64748b;
-    font-weight: 700;
-    border-radius: 8px;
+    font-weight: 600;
+    border-radius: 7px;
     padding: 10px;
 }
 
@@ -39,11 +38,11 @@
 .auth-tab.active {
     background: #fff;
     color: #10233f;
-    box-shadow: 0 2px 8px rgba(16, 35, 63, 0.08);
+    box-shadow: 0 1px 3px rgba(16, 35, 63, 0.08);
 }
 
 .auth-form label {
-    font-weight: bold;
+    font-weight: 600;
     display: block;
     margin-top: 10px;
 }
@@ -52,7 +51,6 @@
     margin-top: 0;
 }
 
-/* ===== Profile section ===== */
 .profile-wrapper {
     max-width: 560px;
     margin: 48px auto 0;
@@ -69,8 +67,8 @@
 
 .profile-header h2 {
     margin: 4px 0 0;
-    font-size: 22px;
-    letter-spacing: -0.5px;
+    font-size: 21px;
+    letter-spacing: -0.3px;
 }
 
 .btn-slim {
@@ -90,8 +88,8 @@
 .status-pill {
     display: inline-block;
     font-size: 12px;
-    font-weight: 800;
-    letter-spacing: 0.4px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
     padding: 6px 12px;
     border-radius: 999px;
 }
@@ -113,7 +111,7 @@
 
 .plan-title {
     margin: 0 0 8px;
-    font-size: 19px;
+    font-size: 18px;
     color: #10233f;
 }
 
@@ -139,10 +137,10 @@
 }
 
 .price-amount {
-    font-size: 32px;
-    font-weight: 800;
+    font-size: 30px;
+    font-weight: 700;
     color: #10233f;
-    letter-spacing: -1px;
+    letter-spacing: -0.8px;
 }
 
 .price-period {
@@ -157,7 +155,7 @@
     gap: 12px;
     background: #f5f8fc;
     border: 1px solid #dce5f1;
-    border-radius: 10px;
+    border-radius: 9px;
     padding: 12px 14px;
     margin-bottom: 16px;
 }
@@ -171,7 +169,7 @@
 
 .code-sample {
     background: #10233f;
-    border-radius: 10px;
+    border-radius: 9px;
     padding: 16px;
     overflow-x: auto;
 }
@@ -184,7 +182,6 @@
     white-space: pre;
 }
 
-/* ===== Sources list (halaman utama) ===== */
 .sources-section {
     margin-bottom: 22px;
 }
@@ -209,16 +206,16 @@
     display: block;
     background: #f5f8fc;
     border: 1px solid #e6ecf5;
-    border-radius: 10px;
+    border-radius: 9px;
     padding: 10px 14px;
     color: #3469ec;
     text-decoration: none;
     font-size: 13px;
-    transition: border-color 0.2s ease;
+    transition: border-color 0.15s ease;
 }
 
 .sources-list li a:hover {
-    border-color: #3469ec;
+    border-color: #b8c8e6;
 }
 
 @media (max-width: 640px) {
@@ -226,7 +223,6 @@
     .profile-wrapper { margin-top: 24px; }
 }
 
-/* ===== Modal: tombol aksi tambahan ===== */
 .modal-box #modal-action-btn {
     margin-bottom: 4px;
 }
@@ -242,21 +238,20 @@
     background: #f5f8fc;
 }
 
-/* ===== Section heading ===== */
 .section-heading {
     margin: 32px 0 6px;
-    font-size: 17px;
+    font-size: 16px;
+    font-weight: 600;
     color: #10233f;
 }
 
-/* ===== Kartu jatah harian ===== */
 .quota-card {
-    padding: 22px 24px;
+    padding: 20px 22px;
 }
 
 .quota-bar {
     background: #eef2f8;
-    height: 8px;
+    height: 7px;
     border-radius: 4px;
     overflow: hidden;
     margin: 4px 0 12px;
@@ -267,11 +262,11 @@
     width: 0%;
     border-radius: 4px;
     background: #3469ec;
-    transition: width 0.6s ease, background 0.3s ease;
+    transition: width 0.5s ease, background 0.2s ease;
 }
 
 .quota-fill.full {
-    background: #f87171;
+    background: #ea5252;
 }
 
 .quota-note {
@@ -279,7 +274,6 @@
     font-size: 13px;
 }
 
-/* ===== Pilihan paket ===== */
 .plan-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -294,21 +288,19 @@
     align-items: flex-start;
     gap: 4px;
     margin: 0;
-    padding: 18px 16px;
+    padding: 16px;
     background: #fff;
     color: #10233f;
     border: 1px solid #dce5f1;
-    border-radius: 14px;
+    border-radius: 12px;
     text-align: left;
     font-weight: 400;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    transition: border-color 0.15s ease;
 }
 
 .plan-option:hover {
     background: #fff;
     border-color: #3469ec;
-    box-shadow: 0 10px 24px rgba(52, 105, 236, 0.12);
-    transform: translateY(-2px);
 }
 
 .plan-option.featured {
@@ -318,27 +310,27 @@
 
 .plan-option-tag {
     position: absolute;
-    top: -10px;
+    top: -9px;
     right: 12px;
     background: #3469ec;
     color: #fff;
     font-size: 10.5px;
-    font-weight: 800;
-    letter-spacing: 0.5px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
     padding: 3px 9px;
     border-radius: 999px;
 }
 
 .plan-option-name {
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 600;
     color: #64748b;
 }
 
 .plan-option-price {
-    font-size: 20px;
-    font-weight: 800;
-    letter-spacing: -0.6px;
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: -0.4px;
     color: #10233f;
 }
 
@@ -347,16 +339,90 @@
     color: #8894a7;
 }
 
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.history-item {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    background: #fff;
+    border: 1px solid #e6ecf5;
+    border-radius: 10px;
+    padding: 13px 15px;
+}
+
+.history-item-main {
+    min-width: 0;
+}
+
+.history-item-content {
+    font-size: 13.5px;
+    color: #10233f;
+    margin: 0 0 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.history-item-date {
+    font-size: 12px;
+    color: #8894a7;
+}
+
+.history-verdict-pill {
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    padding: 5px 10px;
+    border-radius: 999px;
+}
+
+.history-verdict-pill.green { background: #d1fae5; color: #065f46; }
+.history-verdict-pill.red { background: #fee2e2; color: #991b1b; }
+.history-verdict-pill.yellow { background: #fef3c7; color: #92400e; }
+
+.history-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.history-pagination button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+#history-page-info {
+    font-size: 13px;
+    color: #64748b;
+}
+
+html[data-theme="dark"] .history-item {
+    background: #171f30;
+    border-color: #262f42;
+}
+html[data-theme="dark"] .history-item-content { color: #e2e8f5; }
+html[data-theme="dark"] .history-item-date { color: #7c8aa3; }
+html[data-theme="dark"] #history-page-info { color: #93a1b8; }
+
+html[data-theme="dark"] .history-verdict-pill.green { background: #0d1f1a; color: #34d399; }
+html[data-theme="dark"] .history-verdict-pill.red { background: #2a1414; color: #f87171; }
+html[data-theme="dark"] .history-verdict-pill.yellow { background: #2a2110; color: #fbbf24; }
+
 @media (max-width: 640px) {
     .plan-grid {
         grid-template-columns: 1fr;
     }
 }
-
-/* ============================================
-   Mode gelap untuk komponen halaman akun.
-   Palet mengikuti style.css: #0f1521 / #171f30 / #262f42
-   ============================================ */
 
 html[data-theme="dark"] .auth-card {
     background: #171f30;
@@ -394,12 +460,10 @@ html[data-theme="dark"] .status-pill.status-inactive {
     color: #93a1b8;
 }
 
-/* Kartu jatah harian */
 html[data-theme="dark"] .quota-bar { background: #10192a; }
 html[data-theme="dark"] .quota-fill { background: #6c93ff; }
 html[data-theme="dark"] .quota-fill.full { background: #f87171; }
 
-/* Kartu pilihan paket */
 html[data-theme="dark"] .plan-option {
     background: #171f30;
     color: #e2e8f5;
@@ -408,7 +472,6 @@ html[data-theme="dark"] .plan-option {
 html[data-theme="dark"] .plan-option:hover {
     background: #171f30;
     border-color: #6c93ff;
-    box-shadow: 0 10px 24px rgba(108, 147, 255, 0.14);
 }
 html[data-theme="dark"] .plan-option.featured {
     border-color: #6c93ff;
@@ -419,7 +482,6 @@ html[data-theme="dark"] .plan-option-price { color: #e2e8f5; }
 html[data-theme="dark"] .plan-option-note { color: #7c8aa3; }
 html[data-theme="dark"] .plan-option-tag { background: #6c93ff; color: #0f1521; }
 
-/* API key & contoh kode */
 html[data-theme="dark"] .apikey-box {
     background: #10192a;
     border-color: #262f42;
@@ -427,16 +489,14 @@ html[data-theme="dark"] .apikey-box {
 html[data-theme="dark"] .apikey-box code { color: #e2e8f5; }
 html[data-theme="dark"] .code-sample { background: #0a0f19; }
 
-/* Daftar sumber (halaman utama) */
 html[data-theme="dark"] .sources-title { color: #e2e8f5; }
 html[data-theme="dark"] .sources-list li a {
     background: #10192a;
     border-color: #262f42;
     color: #6c93ff;
 }
-html[data-theme="dark"] .sources-list li a:hover { border-color: #6c93ff; }
+html[data-theme="dark"] .sources-list li a:hover { border-color: #46527a; }
 
-/* Modal: tombol OK jadi sekunder saat ada tombol aksi */
 html[data-theme="dark"] .modal-box #modal-action-btn:not(.hidden) + #modal-close-btn {
     background: transparent;
     color: #93a1b8;

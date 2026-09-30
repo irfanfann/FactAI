@@ -27,32 +27,33 @@ body {
 
 .judul h1 {
     margin: 0;
-    font-size: 52px;
-    letter-spacing: -2.7px;
-    line-height: 1.03;
+    font-size: 50px;
+    letter-spacing: -1.6px;
+    line-height: 1.08;
 }
 
 .judul p {
     color: #475569;
+    line-height: 1.55;
 }
 
 .input {
     background: #fff;
     border: 1px solid #dce5f1;
-    border-radius: 18px;
+    border-radius: 14px;
     margin-top: 24px;
     padding: 22px;
     transition: background 0.35s ease, border-color 0.35s ease;
 }
 
 .input label {
-    font-weight: bold;
+    font-weight: 600;
 }
 
 input,
 button {
     box-sizing: border-box;
-    border-radius: 10px;
+    border-radius: 9px;
     font: inherit;
     margin: 7px 0;
     padding: 12px;
@@ -63,7 +64,13 @@ input {
     background: #fbfcff;
     border: 1px solid #cfd9e8;
     color: #10233f;
-    transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    transition: background 0.2s ease, border-color 0.15s ease, color 0.2s ease;
+}
+
+input:focus {
+    outline: none;
+    border-color: #3469ec;
+    box-shadow: 0 0 0 3px rgba(52, 105, 236, 0.12);
 }
 
 button {
@@ -71,12 +78,16 @@ button {
     border: 0;
     color: #fff;
     cursor: pointer;
-    font-weight: 700;
-    transition: background 0.2s ease;
+    font-weight: 600;
+    transition: background 0.15s ease;
 }
 
 button:hover {
     background: #2a55c9;
+}
+
+button:active {
+    background: #2249b3;
 }
 
 .hidden {
@@ -101,12 +112,12 @@ button:hover {
 }
 
 .spinner {
-    width: 48px;
-    height: 48px;
-    border: 4px solid #dce5f1;
-    border-top: 4px solid #3469ec;
+    width: 40px;
+    height: 40px;
+    border: 3px solid #dce5f1;
+    border-top: 3px solid #3469ec;
     border-radius: 50%;
-    animation: spin 1s linear infinite;
+    animation: spin 0.85s linear infinite;
     margin-bottom: 16px;
 }
 
@@ -123,10 +134,10 @@ button:hover {
 
 .result-card {
     background: #fff;
-    border: 1px solid #e6ecf5;
-    border-radius: 20px;
-    padding: 32px;
-    box-shadow: 0 8px 30px rgba(16, 35, 63, 0.06);
+    border: 1px solid #e2e8f2;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 1px 2px rgba(16, 35, 63, 0.04);
     transition: background 0.35s ease, border-color 0.35s ease;
 }
 
@@ -142,17 +153,18 @@ button:hover {
 .badge-label {
     display: inline-block;
     font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 1.2px;
+    font-weight: 700;
+    letter-spacing: 1px;
     color: #3469ec;
     margin-bottom: 8px;
 }
 
 .result-header-text h2 {
     margin: 0 0 8px 0;
-    font-size: 24px;
+    font-size: 22px;
     color: #10233f;
-    letter-spacing: -0.6px;
+    letter-spacing: -0.4px;
+    line-height: 1.3;
 }
 
 .result-url {
@@ -175,14 +187,14 @@ button:hover {
 }
 
 .verdict-badge-icon {
-    width: 34px;
-    height: 34px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 800;
-    font-size: 17px;
+    font-weight: 700;
+    font-size: 16px;
     color: #fff;
     flex-shrink: 0;
     line-height: 1;
@@ -196,9 +208,9 @@ button:hover {
 
 #verdict-badge-title {
     display: block;
-    font-weight: 800;
-    font-size: 13px;
-    letter-spacing: 1px;
+    font-weight: 700;
+    font-size: 12.5px;
+    letter-spacing: 0.8px;
     line-height: 1.1;
 }
 
@@ -206,24 +218,24 @@ button:hover {
     display: block;
     font-size: 11px;
     margin-top: 2px;
-    opacity: 0.85;
+    opacity: 0.8;
 }
 
 .verdict-badge.yellow { background: #fef3c7; color: #92400e; }
-.verdict-badge.yellow .verdict-badge-icon { background: #fbbf24; }
+.verdict-badge.yellow .verdict-badge-icon { background: #f0b429; }
 
 .verdict-badge.green  { background: #d1fae5; color: #065f46; }
-.verdict-badge.green  .verdict-badge-icon { background: #34d399; }
+.verdict-badge.green  .verdict-badge-icon { background: #2fb87e; }
 
 .verdict-badge.red    { background: #fee2e2; color: #991b1b; }
-.verdict-badge.red    .verdict-badge-icon { background: #f87171; }
+.verdict-badge.red    .verdict-badge-icon { background: #ea5252; }
 
 .verdict-panel {
     display: flex;
     align-items: stretch;
     gap: 24px;
-    padding: 24px 26px;
-    border-radius: 16px;
+    padding: 22px 24px;
+    border-radius: 14px;
     margin-bottom: 22px;
     background: #f5f8fc;
     border: 1px solid #e6ecf5;
@@ -231,18 +243,18 @@ button:hover {
 }
 
 .verdict-panel.status-green {
-    background: #ecfdf5;
-    border-color: #a7f3d0;
+    background: #eefaf4;
+    border-color: #b6ecd3;
 }
 
 .verdict-panel.status-yellow {
-    background: #fffbeb;
-    border-color: #fde68a;
+    background: #fdf9ec;
+    border-color: #f4e2a3;
 }
 
 .verdict-panel.status-red {
-    background: #fef2f2;
-    border-color: #fecaca;
+    background: #fdf1f1;
+    border-color: #f3c6c6;
 }
 
 .verdict-score {
@@ -254,8 +266,8 @@ button:hover {
 
 .verdict-score-label {
     font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 1px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
     color: #8894a7;
     margin-bottom: 4px;
 }
@@ -267,22 +279,22 @@ button:hover {
 }
 
 #score-number {
-    font-size: 46px;
-    font-weight: 800;
+    font-size: 40px;
+    font-weight: 700;
     color: #10233f;
-    letter-spacing: -2px;
+    letter-spacing: -1.4px;
     line-height: 1;
 }
 
 .verdict-score-max {
     font-size: 14px;
     color: #8894a7;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .verdict-divider {
     width: 1px;
-    background: rgba(16, 35, 63, 0.08);
+    background: rgba(16, 35, 63, 0.09);
     margin: 4px 0;
     flex-shrink: 0;
 }
@@ -312,7 +324,7 @@ button:hover {
     display: block;
     font-size: 13px;
     color: #10233f;
-    font-weight: 700;
+    font-weight: 600;
     margin-bottom: 2px;
 }
 
@@ -326,45 +338,44 @@ button:hover {
 .analysis-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    gap: 14px;
     margin-bottom: 22px;
-    --status-color: #fbbf24;
-    --status-color-dark: #f5b014;
+    --status-color: #f0b429;
+    --status-color-dark: #d99a1f;
 }
 
 .analysis-grid.status-green {
-    --status-color: #34d399;
-    --status-color-dark: #2ec48b;
+    --status-color: #2fb87e;
+    --status-color-dark: #279c6a;
 }
 
 .analysis-grid.status-yellow {
-    --status-color: #fbbf24;
-    --status-color-dark: #f5b014;
+    --status-color: #f0b429;
+    --status-color-dark: #d99a1f;
 }
 
 .analysis-grid.status-red {
-    --status-color: #f87171;
-    --status-color-dark: #f55f5f;
+    --status-color: #ea5252;
+    --status-color-dark: #d43f3f;
 }
 
 .analysis-card {
     position: relative;
     background: #fff;
     border: 1px solid #e6ecf5;
-    border-radius: 14px;
-    padding: 20px;
+    border-radius: 12px;
+    padding: 18px 20px;
     cursor: pointer;
     overflow: hidden;
-    transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.35s ease;
+    transition: border-color 0.15s ease;
 }
 
 .analysis-card:hover {
-    border-color: #c7d5ee;
-    box-shadow: 0 12px 28px rgba(16, 35, 63, 0.08);
+    border-color: #b8c8e6;
 }
 
 .analysis-card > * {
-    transition: opacity 0.2s ease;
+    transition: opacity 0.15s ease;
 }
 
 .analysis-card:hover > * {
@@ -381,18 +392,18 @@ button:hover {
 
 .analysis-card h3 {
     margin: 0;
-    font-size: 15px;
+    font-size: 14px;
     color: #10233f;
-    font-weight: 700;
+    font-weight: 600;
     flex: 1;
 }
 
 .card-percent {
     font-size: 14px;
-    font-weight: 800;
-    letter-spacing: -0.3px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
     color: var(--status-color);
-    transition: color 0.4s ease;
+    transition: color 0.3s ease;
 }
 
 .mini-bar {
@@ -408,7 +419,7 @@ button:hover {
     border-radius: 3px;
     width: 0%;
     background: var(--status-color);
-    transition: width 0.9s ease-in-out, background 0.4s ease;
+    transition: width 0.6s ease, background 0.3s ease;
 }
 
 .analysis-card p {
@@ -426,25 +437,21 @@ button:hover {
     color: #fff;
     font-size: 12.5px;
     line-height: 1.6;
-    padding: 22px 20px;
+    padding: 20px;
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
     text-align: left;
     opacity: 0;
-    transform: translateY(12px);
     pointer-events: none;
-    transition: opacity 0.28s ease, transform 0.28s ease,
-                background 0.4s ease;
-    border-radius: 14px;
+    transition: opacity 0.18s ease;
+    border-radius: 12px;
     font-weight: 500;
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15);
     z-index: 5;
 }
 
 .analysis-card:hover::after {
     opacity: 1;
-    transform: translateY(0);
 }
 
 .action-buttons {
@@ -456,11 +463,11 @@ button:hover {
     color: #fff;
     border: 0;
     padding: 12px;
-    border-radius: 10px;
-    font-weight: 700;
+    border-radius: 9px;
+    font-weight: 600;
     cursor: pointer;
     width: 100%;
-    transition: all 0.2s ease;
+    transition: background 0.15s ease;
 }
 
 .btn-secondary:hover {
@@ -471,36 +478,36 @@ button:hover {
 .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(16, 35, 63, 0.55);
-    backdrop-filter: blur(4px);
+    background: rgba(16, 35, 63, 0.5);
+    backdrop-filter: blur(3px);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 9999;
     padding: 20px;
-    animation: fadeIn 0.2s ease;
+    animation: fadeIn 0.15s ease;
 }
 
 .modal-box {
     background: #fff;
-    border-radius: 18px;
-    padding: 32px 28px 24px;
+    border-radius: 16px;
+    padding: 30px 26px 22px;
     max-width: 380px;
     width: 100%;
     text-align: center;
-    box-shadow: 0 20px 60px rgba(16, 35, 63, 0.25);
-    animation: popIn 0.25s ease;
+    box-shadow: 0 12px 32px rgba(16, 35, 63, 0.16);
+    animation: popIn 0.18s ease;
     transition: background 0.35s ease;
 }
 
 .modal-icon {
-    width: 56px;
-    height: 56px;
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
     background: #fee2e2;
     color: #dc2626;
-    font-size: 28px;
-    font-weight: bold;
+    font-size: 26px;
+    font-weight: 600;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -509,7 +516,7 @@ button:hover {
 
 .modal-box h3 {
     margin: 0 0 8px;
-    font-size: 18px;
+    font-size: 17px;
     color: #10233f;
 }
 
@@ -525,11 +532,11 @@ button:hover {
     color: #fff;
     border: 0;
     padding: 12px 24px;
-    border-radius: 10px;
-    font-weight: 700;
+    border-radius: 9px;
+    font-weight: 600;
     cursor: pointer;
     width: 100%;
-    transition: background 0.2s;
+    transition: background 0.15s ease;
 }
 
 .btn-primary:hover {
@@ -547,20 +554,20 @@ button:hover {
 }
 
 @keyframes popIn {
-    from { opacity: 0; transform: scale(0.9); }
+    from { opacity: 0; transform: scale(0.96); }
     to   { opacity: 1; transform: scale(1); }
 }
 
 @media (max-width: 640px) {
     .analysis-grid { grid-template-columns: 1fr; }
-    .result-card { padding: 22px; }
+    .result-card { padding: 20px; }
     .result-header { flex-direction: column; }
     .verdict-badge { min-width: auto; }
 
     .verdict-panel {
         flex-direction: column;
         gap: 16px;
-        padding: 20px;
+        padding: 18px;
     }
     .verdict-divider {
         width: 100%;
@@ -573,9 +580,6 @@ button:hover {
 }
 
 @media (max-width: 640px) {
-    /* ... aturan lama tetap ... */
-
-    /* Badge verdict: sembunyikan teks, hanya tampilkan ikon */
     .verdict-badge-text {
         display: none;
     }
@@ -588,12 +592,11 @@ button:hover {
     }
 
     .verdict-badge-icon {
-        width: 36px;
-        height: 36px;
-        font-size: 18px;
+        width: 34px;
+        height: 34px;
+        font-size: 17px;
     }
 
-    /* Header tetap sejajar (judul di kiri, badge di kanan) */
     .result-header {
         flex-direction: row;
         align-items: flex-start;
@@ -606,16 +609,10 @@ button:hover {
         min-width: 0;
     }
 
-    /* URL di HP jangan terlalu lebar */
     .result-url {
         max-width: 100%;
     }
 }
-
-/* ============================================
-   BARU: brand-row/nav-links (sebelumnya kosong)
-   + tombol dark/light mode
-   ============================================ */
 
 .brand-row {
     display: flex;
@@ -634,11 +631,11 @@ button:hover {
 .nav-links a {
     text-decoration: none;
     font-size: 14.5px;
-    font-weight: 600;
+    font-weight: 500;
     color: #64748b;
     padding-bottom: 4px;
     border-bottom: 2px solid transparent;
-    transition: color 0.2s ease, border-color 0.2s ease;
+    transition: color 0.15s ease, border-color 0.15s ease;
 }
 
 .nav-links a:hover { color: #10233f; }
@@ -646,6 +643,7 @@ button:hover {
 .nav-links a.active {
     color: #3469ec;
     border-color: #3469ec;
+    font-weight: 600;
 }
 
 .nav-divider {
@@ -666,7 +664,7 @@ button:hover {
     position: relative;
     display: inline-block;
     flex-shrink: 0;
-    transition: background 0.3s ease, border-color 0.3s ease;
+    transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .theme-toggle:hover {
@@ -681,25 +679,21 @@ button:hover {
     height: 20px;
     border-radius: 50%;
     background: #ffffff;
-    box-shadow: 0 2px 6px rgba(16, 35, 63, 0.15);
+    box-shadow: 0 1px 3px rgba(16, 35, 63, 0.18);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 11px;
-    transition: transform 0.35s cubic-bezier(.16,1,.3,1);
+    transition: transform 0.25s ease;
     pointer-events: none;
 }
 
 .icon-sun, .icon-moon {
     position: absolute;
-    transition: opacity 0.25s ease, transform 0.25s ease;
+    transition: opacity 0.2s ease;
 }
-.icon-sun  { opacity: 1; transform: scale(1); }
-.icon-moon { opacity: 0; transform: scale(0.5); }
-
-/* ============================================
-   BARU: mode gelap (aktif saat <html data-theme="dark">)
-   ============================================ */
+.icon-sun  { opacity: 1; }
+.icon-moon { opacity: 0; }
 
 html[data-theme="dark"] body {
     background: #0f1521;
@@ -724,6 +718,10 @@ html[data-theme="dark"] input {
     border-color: #262f42;
     color: #e2e8f5;
 }
+html[data-theme="dark"] input:focus {
+    border-color: #6c93ff;
+    box-shadow: 0 0 0 3px rgba(108, 147, 255, 0.14);
+}
 
 html[data-theme="dark"] .theme-toggle {
     background: #262f42 !important;
@@ -736,12 +734,13 @@ html[data-theme="dark"] .toggle-knob {
     transform: translateX(22px);
     background: #10192a;
 }
-html[data-theme="dark"] .icon-sun  { opacity: 0; transform: scale(0.5); }
-html[data-theme="dark"] .icon-moon { opacity: 1; transform: scale(1); }
+html[data-theme="dark"] .icon-sun  { opacity: 0; }
+html[data-theme="dark"] .icon-moon { opacity: 1; }
 
 html[data-theme="dark"] .result-card {
     background: #171f30;
     border-color: #262f42;
+    box-shadow: none;
 }
 html[data-theme="dark"] .result-header-text h2 { color: #e2e8f5; }
 html[data-theme="dark"] .result-url { color: #7c8aa3; }
@@ -777,22 +776,21 @@ html[data-theme="dark"] .analysis-card h3 { color: #e2e8f5; }
 html[data-theme="dark"] .analysis-card p { color: #93a1b8; }
 html[data-theme="dark"] .mini-bar { background: #10192a; }
 
-html[data-theme="dark"] .modal-box { background: #171f30; }
+html[data-theme="dark"] .modal-box {
+    background: #171f30;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+}
 html[data-theme="dark"] .modal-box h3 { color: #e2e8f5; }
 html[data-theme="dark"] .modal-box p { color: #b3bfd4; }
-
-/* ============================================
-   Status auth di navbar (index.html)
-   ============================================ */
 
 .nav-links a.nav-auth-btn {
     background: #3469ec;
     color: #fff;
     padding: 9px 18px;
     border: 0;
-    border-radius: 10px;
-    font-weight: 700;
-    transition: background 0.2s ease;
+    border-radius: 9px;
+    font-weight: 600;
+    transition: background 0.15s ease;
 }
 
 .nav-links a.nav-auth-btn:hover {
@@ -807,14 +805,12 @@ html[data-theme="dark"] .modal-box p { color: #b3bfd4; }
     padding: 6px 14px 6px 6px;
     background: #fff;
     border: 1px solid #dce5f1;
-    border-bottom: 1px solid #dce5f1;
     border-radius: 999px;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.35s ease;
+    transition: border-color 0.15s ease;
 }
 
 .nav-links a.nav-account-chip:hover {
-    border-color: #3469ec;
-    box-shadow: 0 6px 16px rgba(52, 105, 236, 0.12);
+    border-color: #b8c8e6;
 }
 
 .nav-avatar {
@@ -824,7 +820,7 @@ html[data-theme="dark"] .modal-box p { color: #b3bfd4; }
     background: #3469ec;
     color: #fff;
     font-size: 14px;
-    font-weight: 800;
+    font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -840,7 +836,7 @@ html[data-theme="dark"] .modal-box p { color: #b3bfd4; }
 
 .nav-account-email {
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 600;
     color: #10233f;
     max-width: 150px;
     overflow: hidden;
@@ -850,7 +846,7 @@ html[data-theme="dark"] .modal-box p { color: #b3bfd4; }
 
 .nav-account-quota {
     font-size: 11.5px;
-    font-weight: 600;
+    font-weight: 500;
     color: #64748b;
 }
 
@@ -860,14 +856,12 @@ html[data-theme="dark"] .modal-box p { color: #b3bfd4; }
 @media (max-width: 640px) {
     .nav-links { gap: 12px; }
 
-    /* Di HP: chip hanya avatar, teks disembunyikan */
     .nav-account-info { display: none; }
     .nav-links a.nav-account-chip { padding: 4px; }
 
     .nav-links a.nav-auth-btn { padding: 8px 14px; font-size: 13px; }
 }
 
-/* ----- Mode gelap ----- */
 html[data-theme="dark"] .nav-links a.nav-auth-btn {
     background: #6c93ff;
     color: #0f1521;
@@ -879,8 +873,7 @@ html[data-theme="dark"] .nav-links a.nav-account-chip {
     border-color: #262f42;
 }
 html[data-theme="dark"] .nav-links a.nav-account-chip:hover {
-    border-color: #6c93ff;
-    box-shadow: 0 6px 16px rgba(108, 147, 255, 0.14);
+    border-color: #46527a;
 }
 html[data-theme="dark"] .nav-avatar { background: #6c93ff; color: #0f1521; }
 html[data-theme="dark"] .nav-account-email { color: #e2e8f5; }
