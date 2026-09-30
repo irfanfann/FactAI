@@ -79,6 +79,13 @@
                     <button id="logout-btn" class="btn-secondary btn-slim">Keluar</button>
                 </div>
 
+                <div id="verify-banner" class="result-card hidden" style="border-left: 4px solid #e0a800; margin-bottom: 20px;">
+                    <p class="plan-desc" style="margin: 0 0 10px;">
+                        Email kamu belum diverifikasi. Verifikasi dulu untuk bisa melakukan pemeriksaan artikel.
+                    </p>
+                    <button id="resend-verify-btn" class="btn-slim">Kirim Ulang Email Verifikasi</button>
+                </div>
+
                 <div id="free-view" class="hidden">
 
                     <div class="result-card quota-card">
@@ -230,6 +237,9 @@
     const profileEmail     = document.getElementById('profile-email');
     const logoutBtn        = document.getElementById('logout-btn');
 
+    const verifyBanner     = document.getElementById('verify-banner');
+    const resendVerifyBtn  = document.getElementById('resend-verify-btn');
+
     const freeView         = document.getElementById('free-view');
     const quotaText        = document.getElementById('quota-text');
     const quotaFill        = document.getElementById('quota-fill');
@@ -250,6 +260,7 @@
 
     let historyPage = 1;
     const HISTORY_PAGE_SIZE = 10;
+    let currentUserEmail = null;
 
     const modalOverlay     = document.getElementById('modal-overlay');
     const modalTitle       = document.getElementById('modal-title');
@@ -362,6 +373,7 @@
             });
             setToken(data.access_token);
             await loadProfile();
+            showModal('Cek Email Kamu', 'Akun berhasil dibuat. Kami sudah mengirim link verifikasi ke email kamu — verifikasi dulu sebelum bisa memeriksa artikel.');
         } catch (err) {
             hideLoading();
             showModal('Gagal Mendaftar', err.message);
@@ -391,6 +403,9 @@
         profileSection.classList.remove('hidden');
 
         profileEmail.textContent = profile.email;
+        currentUserEmail = profile.email;
+
+        verifyBanner.classList.toggle('hidden', !!profile.email_verified);
 
         if (profile.is_subscribed) {
             renderActiveView(profile);
@@ -520,6 +535,24 @@
     logoutBtn.addEventListener('click', () => {
         clearToken();
         showAuthView();
+    });
+
+    resendVerifyBtn.addEventListener('click', async () => {
+        if (!currentUserEmail) return;
+        resendVerifyBtn.disabled = true;
+        resendVerifyBtn.textContent = 'Mengirim...';
+        try {
+            await apiFetch('/api/auth/resend-verification', {
+                method: 'POST',
+                body: JSON.stringify({ email: currentUserEmail }),
+            });
+            showModal('Terkirim', 'Email verifikasi sudah dikirim ulang. Cek inbox kamu.');
+        } catch (err) {
+            showModal('Gagal Mengirim', err.message);
+        } finally {
+            resendVerifyBtn.disabled = false;
+            resendVerifyBtn.textContent = 'Kirim Ulang Email Verifikasi';
+        }
     });
 
     async function startCheckout(planType) {
