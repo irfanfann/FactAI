@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Verifikasi Email - Fact.AI</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="config.js"></script>
+</head>
+<body>
+  <div style="max-width:480px;margin:80px auto;text-align:center;">
+    <h2>Verifikasi Email</h2>
+    <p id="status">Memverifikasi akun kamu...</p>
+    <a href="account.html" id="backLink" style="display:none;">Ke halaman akun</a>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
+    const statusEl = document.getElementById("status");
+    const backLink = document.getElementById("backLink");
+
+    if (!token) {
+      statusEl.textContent = "Token tidak ditemukan di URL.";
+    } else {
+      fetch(`${window.API_BASE_URL}/api/auth/verify?token=${encodeURIComponent(token)}`)
+        .then(res => res.json().then(data => ({ ok: res.ok, data })))
+        .then(({ ok, data }) => {
+          statusEl.textContent = ok
+            ? "Email berhasil diverifikasi! Kamu sekarang bisa login dan memakai Fact.AI."
+            : (data.detail || "Verifikasi gagal.");
+          backLink.style.display = "inline-block";
+        })
+        .catch(() => {
+          statusEl.textContent = "Terjadi kesalahan, coba lagi nanti.";
+        });
+    }
+  </script>
+</body>
+</html>
