@@ -306,24 +306,37 @@
         }
     }
 
-    // 4 kartu analisis masih placeholder, belum dihitung backend.
-    function setPlaceholderAnalysis(level) {
-        const presets = {
+    function renderAnalysis(analysisDetails, level) {
+        const fallbackPresets = {
             green:  { kredibilitas: 10, bahasa: 15, fakta: 10, konteks: 15 },
             yellow: { kredibilitas: 40, bahasa: 45, fakta: 55, konteks: 50 },
             red:    { kredibilitas: 90, bahasa: 85, fakta: 92, konteks: 80 },
         };
-        const descs = {
+        const fallbackDescs = {
             kredibilitas: 'Belum dihitung otomatis oleh sistem — fitur analisis sumber sedang dikembangkan.',
             bahasa: 'Belum dihitung otomatis oleh sistem — fitur analisis bahasa sedang dikembangkan.',
             fakta: 'Belum dihitung otomatis oleh sistem — fitur pencocokan fakta sedang dikembangkan.',
             konteks: 'Belum dihitung otomatis oleh sistem — fitur evaluasi konteks sedang dikembangkan.',
         };
-        const values = presets[level] || presets.yellow;
-        for (const key in values) {
-            document.getElementById('pct-' + key).textContent = values[key] + '%';
-            document.getElementById('bar-' + key).style.width = values[key] + '%';
-            document.getElementById('desc-' + key).textContent = descs[key];
+
+        // key frontend -> key backend
+        const keyMap = {
+            kredibilitas: 'credibility',
+            bahasa: 'language',
+            fakta: 'fact_match',
+            konteks: 'context',
+        };
+
+        for (const feKey in keyMap) {
+            const beKey = keyMap[feKey];
+            const aspect = analysisDetails && analysisDetails[beKey];
+
+            const score = aspect ? aspect.score : (fallbackPresets[level] || fallbackPresets.yellow)[feKey];
+            const desc = aspect ? aspect.description : fallbackDescs[feKey];
+
+            document.getElementById('pct-' + feKey).textContent = score + '%';
+            document.getElementById('bar-' + feKey).style.width = score + '%';
+            document.getElementById('desc-' + feKey).textContent = desc;
         }
     }
 
@@ -396,7 +409,7 @@
         scoreDesc.textContent = data.explanation || '-';
         nextStepText.textContent = nextStepMap[level];
 
-        setPlaceholderAnalysis(level);
+        renderAnalysis(data.analysis_details, level);
         renderSources(data.sources);
 
         resultSection.scrollIntoView({ behavior: 'smooth' });
